@@ -1,5 +1,7 @@
 import React from 'react'
 
+import FullPageLoader from './components/FullPageLoader'
+
 export class App extends React.Component {
   state = {
     // global state
@@ -38,7 +40,8 @@ export class App extends React.Component {
   render () {
     return (
       <div>
-        CodeRoad APP
+        <h1>CodeRoad APP</h1>
+        <FullPageLoader />
       </div>
     )
   }
