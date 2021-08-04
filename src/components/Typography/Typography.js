@@ -3,8 +3,6 @@ import PropTypes from 'prop-types'
 
 import classes from './styles.module.css'
 
-console.log(classes)
-
 export const Typography = (props) => {
   const {
     className,
