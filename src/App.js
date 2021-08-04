@@ -76,12 +76,14 @@ export class App extends React.Component {
           CONTAINED PRIMARY
         </Button>
         <br />
+        <br />
         <Button
           variant={'contained'}
           color={'secondary'}
         >
           CONTAINED SECONDARY
         </Button>
+        <br />
         <br />
         <Button
           variant={'text'}
