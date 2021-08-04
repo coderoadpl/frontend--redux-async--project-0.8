@@ -38,10 +38,17 @@ export class App extends React.Component {
   }
 
   render () {
+    const { isLoading } = this.state
+
     return (
       <div>
         <h1>CodeRoad APP</h1>
-        <FullPageLoader />
+        {
+          isLoading ?
+            <FullPageLoader />
+            :
+            null
+        }
       </div>
     )
   }
