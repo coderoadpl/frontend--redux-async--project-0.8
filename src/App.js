@@ -1,16 +1,18 @@
 import React from 'react'
 
+import FullPageLayout from './components/FullPageLayout'
 import FullPageMessage from './components/FullPageMessage'
 import FullPageLoader from './components/FullPageLoader'
 import Typography from './components/Typography'
 import Button from './components/Button/Button'
+import Message from './components/Message'
 
 export class App extends React.Component {
   state = {
     // global state
     isLoading: false,
-    hasError: false,
-    errorMessage: '',
+    hasError: true,
+    errorMessage: 'ERROR',
     isInfoDisplayed: false,
     infoMessage: '',
 
@@ -110,13 +112,33 @@ export class App extends React.Component {
             null
         }
 
-        {
+        {/* {
           hasError ?
             <FullPageMessage
+              className={'regular-class'}
+              wrapperProps={{
+                className: 'wrapper-class'
+              }}
               message={errorMessage}
               iconVariant={'error'}
               onButtonClick={console.log}
             />
+            :
+            null
+        } */}
+
+        {
+          hasError ?
+            <FullPageLayout
+              className={'wrapper-class'}
+            >
+              <Message
+                className={'regular-class'}
+                message={errorMessage}
+                iconVariant={'error'}
+                onButtonClick={console.log}
+              />
+            </FullPageLayout>
             :
             null
         }
