@@ -6,13 +6,14 @@ import FullPageLoader from './components/FullPageLoader'
 import Typography from './components/Typography'
 import Button from './components/Button/Button'
 import Message from './components/Message'
+import TextField from './components/TextField'
 
 export class App extends React.Component {
   state = {
     // global state
     isLoading: false,
-    hasError: true,
-    errorMessage: 'ERROR',
+    hasError: false,
+    errorMessage: '',
     isInfoDisplayed: false,
     infoMessage: '',
 
@@ -142,6 +143,10 @@ export class App extends React.Component {
             :
             null
         }
+
+        <TextField
+          placeholder={'E-mail'}
+        />
 
       </div>
     )
