@@ -8,6 +8,8 @@ import LoginForm from './components/LoginForm'
 import CreateAccountForm from './components/CreateAccountForm'
 import RecoverPasswordForm from './components/RecoverPasswordForm'
 
+import { signIn } from './auth'
+
 export class App extends React.Component {
   state = {
     // global state
@@ -43,6 +45,27 @@ export class App extends React.Component {
     searchPhrase: ''
   }
 
+  onClickLogin = async () => {
+    this.setState(() => ({ isLoading: true }))
+    try {
+      await signIn(this.state.loginEmail, this.state.loginPassword)
+    } catch (error) {
+      this.setState(() => ({
+        hasError: true,
+        errorMessage: error.data.error.message
+      }))
+    } finally {
+      this.setState(() => ({ isLoading: false }))
+    }
+  }
+
+  dismissError = () => {
+    this.setState(() => ({
+      hasError: false,
+      errorMessage: ''
+    }))
+  }
+
   render () {
     const {
       loginEmail,
@@ -70,7 +93,7 @@ export class App extends React.Component {
                 password={loginPassword}
                 onChangeEmail={(e) => this.setState(() => ({ loginEmail: e.target.value }))}
                 onChangePassword={(e) => this.setState(() => ({ loginPassword: e.target.value }))}
-                onClickLogin={() => console.log('onClickLogin')}
+                onClickLogin={this.onClickLogin}
                 onClickCreateAccount={() => this.setState(() => ({ notLoginUserRoute: 'CREATE-ACCOUNT' }))}
                 onClickForgotPassword={() => this.setState(() => ({ notLoginUserRoute: 'RECOVER-PASSWORD' }))}
               />
@@ -130,7 +153,7 @@ export class App extends React.Component {
                 className={'regular-class'}
                 message={errorMessage}
                 iconVariant={'error'}
-                onButtonClick={console.log}
+                onButtonClick={this.dismissError}
               />
             </FullPageLayout>
             :
