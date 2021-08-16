@@ -24,7 +24,7 @@ export class App extends React.Component {
     userAvatar: '',
 
     // router state
-    notLoginUserRoute: 'RECOVER-PASSWORD', // 'CREATE-ACCOUNT' or 'RECOVER-PASSWORD'
+    notLoginUserRoute: 'LOGIN', // 'CREATE-ACCOUNT' or 'RECOVER-PASSWORD'
 
     // login page state
     loginEmail: '',
@@ -71,8 +71,8 @@ export class App extends React.Component {
                 onChangeEmail={(e) => this.setState(() => ({ loginEmail: e.target.value }))}
                 onChangePassword={(e) => this.setState(() => ({ loginPassword: e.target.value }))}
                 onClickLogin={() => console.log('onClickLogin')}
-                onClickCreateAccount={() => console.log('onClickCreateAccount')}
-                onClickForgotPassword={() => console.log('onClickForgotPassword')}
+                onClickCreateAccount={() => this.setState(() => ({ notLoginUserRoute: 'CREATE-ACCOUNT' }))}
+                onClickForgotPassword={() => this.setState(() => ({ notLoginUserRoute: 'RECOVER-PASSWORD' }))}
               />
             </FullPageLayout>
             :
@@ -86,7 +86,7 @@ export class App extends React.Component {
                   onChangePassword={(e) => this.setState(() => ({ createAccountPassword: e.target.value }))}
                   onChangeRepeatPassword={(e) => this.setState(() => ({ createAccountRepeatPassword: e.target.value }))}
                   onClickCreateAccount={() => console.log('onClickCreateAccount')}
-                  onClickBackToLogin={() => console.log('onClickBackToLogin')}
+                  onClickBackToLogin={() => this.setState(() => ({ notLoginUserRoute: 'LOGIN' }))}
                 />
               </FullPageLayout>
               :
@@ -96,7 +96,7 @@ export class App extends React.Component {
                     email={recoverPasswordEmail}
                     onChangeEmail={(e) => this.setState(() => ({ recoverPasswordEmail: e.target.value }))}
                     onClickRecover={() => console.log('onClickRecover')}
-                    onClickBackToLogin={() => console.log('onClickBackToLogin')}
+                    onClickBackToLogin={() => this.setState(() => ({ notLoginUserRoute: 'LOGIN' }))}
                   />
                 </FullPageLayout>
                 :
