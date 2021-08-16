@@ -1,9 +1,9 @@
 import { removeIdToken, removeRefreshToken } from './token'
 
 export const logOut = () => {
-    removeIdToken()
-    removeRefreshToken()
-    return Promise.resolve()
+  removeIdToken()
+  removeRefreshToken()
+  return Promise.resolve()
 }
 
 export default logOut
