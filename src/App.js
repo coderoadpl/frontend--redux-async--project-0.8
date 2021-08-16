@@ -56,7 +56,9 @@ export class App extends React.Component {
 
         {
           notLoginUserRoute === 'LOGIN' ?
-            <LoginForm />
+            <FullPageLayout>
+              <LoginForm />
+            </FullPageLayout>
             :
             null
         }
