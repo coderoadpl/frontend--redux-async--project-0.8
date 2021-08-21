@@ -14,6 +14,7 @@ export const LoginForm = (props) => {
     email,
     emailError,
     password,
+    passwordError,
     onChangeEmail,
     onChangePassword,
     onClickLogin,
@@ -48,6 +49,7 @@ export const LoginForm = (props) => {
         placeholder={'Password'}
         type={'password'}
         value={password}
+        errorMessage={passwordError}
         onChange={onChangePassword}
       />
       <Button
@@ -82,6 +84,7 @@ LoginForm.propTypes = {
   email: PropTypes.string.isRequired,
   emailError: PropTypes.string,
   password: PropTypes.string.isRequired,
+  passwordError: PropTypes.string,
   onChangeEmail: PropTypes.func.isRequired,
   onChangePassword: PropTypes.func.isRequired,
   onClickLogin: PropTypes.func.isRequired,

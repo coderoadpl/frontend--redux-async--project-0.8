@@ -34,6 +34,7 @@ export class App extends React.Component {
     loginEmail: '',
     loginEmailError: '',
     loginPassword: '',
+    loginPasswordError: '',
     loginSubmitted: false,
 
     // create account page
@@ -53,6 +54,7 @@ export class App extends React.Component {
     this.setState(() => ({ loginSubmitted: true }))
 
     if (this.state.loginEmailError) return
+    if (this.state.loginPasswordError) return
 
     this.setState(() => ({ isLoading: true }))
     try {
@@ -79,6 +81,7 @@ export class App extends React.Component {
       loginEmail,
       loginEmailError,
       loginPassword,
+      loginPasswordError,
       loginSubmitted,
       isLoading,
       isInfoDisplayed,
@@ -102,13 +105,19 @@ export class App extends React.Component {
                 email={loginEmail}
                 emailError={loginSubmitted ? loginEmailError : undefined}
                 password={loginPassword}
+                passwordError={loginSubmitted ? loginPasswordError : undefined}
                 onChangeEmail={(e) => {
                   this.setState(() => ({
                     loginEmail: e.target.value,
                     loginEmailError: isEmail(e.target.value) ? '' : 'Please type a valid e-mail!'
                   }))
                 }}
-                onChangePassword={(e) => this.setState(() => ({ loginPassword: e.target.value }))}
+                onChangePassword={(e) => {
+                  this.setState(() => ({
+                    loginPassword: e.target.value,
+                    loginPasswordError: e.target.value.length >= 6 ? '' : 'Password must have at least 6 chars!'
+                  }))
+                }}
                 onClickLogin={this.onClickLogin}
                 onClickCreateAccount={() => this.setState(() => ({ notLoginUserRoute: 'CREATE-ACCOUNT' }))}
                 onClickForgotPassword={() => this.setState(() => ({ notLoginUserRoute: 'RECOVER-PASSWORD' }))}
