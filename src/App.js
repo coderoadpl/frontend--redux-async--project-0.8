@@ -36,6 +36,9 @@ export class App extends React.Component {
     userEmail: '',
     userAvatar: '',
 
+    // user dropdown
+    isUserDropdownOpen: false,
+
     // router state
     notLoginUserRoute: 'LOGIN', // 'CREATE-ACCOUNT' or 'RECOVER-PASSWORD'
 
@@ -174,6 +177,7 @@ export class App extends React.Component {
       userDisplayName,
       userEmail,
       userAvatar,
+      isUserDropdownOpen,
       loginEmail,
       loginEmailError,
       loginPassword,
@@ -212,7 +216,8 @@ export class App extends React.Component {
                   userDisplayName={userDisplayName}
                   userEmail={userEmail}
                   userAvatar={userAvatar}
-                  contentList={'contentList contentList'}
+                  onClick={() => this.setState((prevState) => ({ isUserDropdownOpen: !prevState.isUserDropdownOpen }))}
+                  contentList={isUserDropdownOpen ? 'contentList contentList' : null}
                 />
               </AppBar>
             </div>
