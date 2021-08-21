@@ -9,12 +9,12 @@ import Message from './components/Message'
 import LoginForm from './components/LoginForm'
 import CreateAccountForm from './components/CreateAccountForm'
 import RecoverPasswordForm from './components/RecoverPasswordForm'
-import AppBar from './components/AppBar'
 import Logo from './components/Logo'
 import UserDropdown from './components/UserDropdown'
 import ListItem from './components/ListItem'
 import List from './components/List'
-import CoursesList from './components/CoursesList/CoursesList'
+import CoursesList from './components/CoursesList'
+import MainLayout from './components/MainLayout'
 
 import { signIn, signUp, getIdToken, decodeToken, checkIfUserIsLoggedIn, sendPasswordResetEmail, logOut } from './auth'
 
@@ -240,39 +240,46 @@ export class App extends React.Component {
         {
           isUserLoggedIn ?
             <div>
-              <AppBar>
-                <Logo
-                  className={classes.logo}
-                />
-                <UserDropdown
-                  className={classes.userDropdown}
-                  userDisplayName={userDisplayName}
-                  userEmail={userEmail}
-                  userAvatar={userAvatar}
-                  onClick={() => this.setState((prevState) => ({ isUserDropdownOpen: !prevState.isUserDropdownOpen }))}
-                  contentList={
-                    isUserDropdownOpen ?
-                      <List
-                        className={classes.userDropdownList}
-                      >
-                        <ListItem
-                          icon={'profile'}
-                          text={'Profile'}
-                          disabled={true}
-                        />
-                        <ListItem
-                          icon={'log-out'}
-                          text={'Log out'}
-                          onClick={this.onClickLogOut}
-                        />
-                      </List>
-                      :
-                      null
-                  }
-                />
-              </AppBar>
-              <CoursesList
-                courses={courses}
+              <MainLayout
+                contentAppBar={
+                  <>
+                    <Logo
+                      className={classes.logo}
+                    />
+                    <UserDropdown
+                      className={classes.userDropdown}
+                      userDisplayName={userDisplayName}
+                      userEmail={userEmail}
+                      userAvatar={userAvatar}
+                      onClick={() => this.setState((prevState) => ({ isUserDropdownOpen: !prevState.isUserDropdownOpen }))}
+                      contentList={
+                        isUserDropdownOpen ?
+                          <List
+                            className={classes.userDropdownList}
+                          >
+                            <ListItem
+                              icon={'profile'}
+                              text={'Profile'}
+                              disabled={true}
+                            />
+                            <ListItem
+                              icon={'log-out'}
+                              text={'Log out'}
+                              onClick={this.onClickLogOut}
+                            />
+                          </List>
+                          :
+                          null
+                      }
+                    />
+                  </>
+                }
+                contentSearch={'contentSearch'}
+                contentMain={
+                  <CoursesList
+                    courses={courses}
+                  />
+                }
               />
             </div>
             :
