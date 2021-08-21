@@ -1,7 +1,22 @@
 .root {
+  display: flex;
+  align-items: center;
   height: 100%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  box-sizing: border-box;
+}
+
+.wrapper {
+  cursor: pointer;
   display: flex;
   justify-content: flex-end;
+  border-radius: 4px;
+  padding: 4px;
+}
+
+.wrapper:hover {
+  background-color: #ebebea;
 }
 
 .userDisplayName {

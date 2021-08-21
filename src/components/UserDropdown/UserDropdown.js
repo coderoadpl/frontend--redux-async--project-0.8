@@ -21,27 +21,31 @@ export const UserDropdown = (props) => {
       {...otherProps}
     >
       <div
-        className={classes.textWrapper}
+        className={classes.wrapper}
       >
-        <Typography
-          className={classes.userDisplayName}
-          variant={'body1'}
+        <div
+          className={classes.textWrapper}
         >
-          {userDisplayName || '– –'}
-        </Typography>
-        <Typography
-          className={classes.userEmail}
-          variant={'caption'}
+          <Typography
+            className={classes.userDisplayName}
+            variant={'body1'}
+          >
+            {userDisplayName || '– –'}
+          </Typography>
+          <Typography
+            className={classes.userEmail}
+            variant={'caption'}
+          >
+            {userEmail}
+          </Typography>
+        </div>
+        <div
+          className={classes.avatarWrapper}
         >
-          {userEmail}
-        </Typography>
-      </div>
-      <div
-        className={classes.avatarWrapper}
-      >
-        <Avatar
-          src={userAvatar}
-        />
+          <Avatar
+            src={userAvatar}
+          />
+        </div>
       </div>
     </div>
   )
