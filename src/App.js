@@ -17,6 +17,8 @@ import List from './components/List'
 
 import { signIn, signUp, getIdToken, decodeToken, checkIfUserIsLoggedIn, sendPasswordResetEmail, logOut } from './auth'
 
+import { getAll as getAllCourses } from './api/courses'
+
 import classes from './styles.module.css'
 
 const EMAIL_VALIDATION_ERROR = 'Please type a valid e-mail!'
@@ -145,6 +147,11 @@ export class App extends React.Component {
     }
   }
 
+  fetchCourses = async () => {
+    const courses = await getAllCourses()
+    console.log(courses)
+  }
+
   onUserLogin = () => {
     const token = getIdToken()
     if (!token) return
@@ -157,6 +164,8 @@ export class App extends React.Component {
       userEmail: user.email,
       userAvatar: ''
     }))
+
+    this.fetchCourses()
   }
 
   onClickLogOut = async () => {
