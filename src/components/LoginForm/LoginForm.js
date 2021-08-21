@@ -12,6 +12,7 @@ export const LoginForm = (props) => {
   const {
     className,
     email,
+    emailError,
     password,
     onChangeEmail,
     onChangePassword,
@@ -39,6 +40,7 @@ export const LoginForm = (props) => {
         className={classes.textField}
         placeholder={'E-mail'}
         value={email}
+        errorMessage={emailError}
         onChange={onChangeEmail}
       />
       <TextField
@@ -78,6 +80,7 @@ export const LoginForm = (props) => {
 LoginForm.propTypes = {
   className: PropTypes.string,
   email: PropTypes.string.isRequired,
+  emailError: PropTypes.string,
   password: PropTypes.string.isRequired,
   onChangeEmail: PropTypes.func.isRequired,
   onChangePassword: PropTypes.func.isRequired,

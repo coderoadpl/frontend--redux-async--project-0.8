@@ -1,5 +1,7 @@
 import React from 'react'
 
+import isEmail from 'validator/lib/isEmail'
+
 import FullPageLayout from './components/FullPageLayout'
 import FullPageMessage from './components/FullPageMessage'
 import FullPageLoader from './components/FullPageLoader'
@@ -30,6 +32,7 @@ export class App extends React.Component {
 
     // login page state
     loginEmail: '',
+    loginEmailError: '',
     loginPassword: '',
 
     // create account page
@@ -69,6 +72,7 @@ export class App extends React.Component {
   render () {
     const {
       loginEmail,
+      loginEmailError,
       loginPassword,
       isLoading,
       isInfoDisplayed,
@@ -90,8 +94,14 @@ export class App extends React.Component {
             <FullPageLayout>
               <LoginForm
                 email={loginEmail}
+                emailError={loginEmailError}
                 password={loginPassword}
-                onChangeEmail={(e) => this.setState(() => ({ loginEmail: e.target.value }))}
+                onChangeEmail={(e) => {
+                  this.setState(() => ({
+                    loginEmail: e.target.value,
+                    loginEmailError: isEmail(e.target.value) ? '' : 'Please type a valid e-mail!'
+                  }))
+                }}
                 onChangePassword={(e) => this.setState(() => ({ loginPassword: e.target.value }))}
                 onClickLogin={this.onClickLogin}
                 onClickCreateAccount={() => this.setState(() => ({ notLoginUserRoute: 'CREATE-ACCOUNT' }))}
