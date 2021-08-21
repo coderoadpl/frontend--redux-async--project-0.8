@@ -1,0 +1,23 @@
+.root {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.courseCardWrapper {
+  flex-basis: 33.333%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 1024px) {
+  .courseCardWrapper {
+    flex-basis: 50%;
+  }
+}
+
+@media (max-width: 700px) {
+  .courseCardWrapper {
+    flex-basis: 100%;
+  }
+}

@@ -14,7 +14,7 @@ import Logo from './components/Logo'
 import UserDropdown from './components/UserDropdown'
 import ListItem from './components/ListItem'
 import List from './components/List'
-import CourseCard from './components/CourseCard'
+import CoursesList from './components/CoursesList/CoursesList'
 
 import { signIn, signUp, getIdToken, decodeToken, checkIfUserIsLoggedIn, sendPasswordResetEmail, logOut } from './auth'
 
@@ -271,18 +271,9 @@ export class App extends React.Component {
                   }
                 />
               </AppBar>
-              <div>
-                {
-                  courses && courses.map((course) => {
-                    return (
-                      <CourseCard
-                        key={course.id}
-                        course={course}
-                      />
-                    )
-                  })
-                }
-              </div>
+              <CoursesList
+                courses={courses}
+              />
             </div>
             :
             notLoginUserRoute === 'LOGIN' ?

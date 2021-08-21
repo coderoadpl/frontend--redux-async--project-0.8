@@ -80,14 +80,16 @@ export const CourseCard = (props) => {
   )
 }
 
+export const CoursePropType = PropTypes.shape({
+  category: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired
+}).isRequired
+
 CourseCard.propTypes = {
   className: PropTypes.string,
-  course: PropTypes.shape({
-    category: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired
-  }).isRequired
+  course: CoursePropType
 }
 
 export default CourseCard
