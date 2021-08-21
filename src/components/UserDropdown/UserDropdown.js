@@ -12,6 +12,7 @@ export const UserDropdown = (props) => {
     userDisplayName,
     userEmail,
     userAvatar,
+    contentList,
     ...otherProps
   } = props
 
@@ -47,6 +48,17 @@ export const UserDropdown = (props) => {
           />
         </div>
       </div>
+
+      {
+        contentList ?
+          <div
+            className={classes.listContainer}
+          >
+            {contentList}
+          </div>
+          :
+          null
+      }
     </div>
   )
 }
@@ -55,7 +67,8 @@ UserDropdown.propTypes = {
   className: PropTypes.string,
   userDisplayName: PropTypes.string,
   userEmail: PropTypes.string,
-  userAvatar: PropTypes.string
+  userAvatar: PropTypes.string,
+  contentList: PropTypes.node
 }
 
 export default UserDropdown
