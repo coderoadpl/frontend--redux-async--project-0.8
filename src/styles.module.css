@@ -6,3 +6,7 @@
     width: calc(100% - 154px);
   }
 }
+
+.userDropdownList {
+  width: 220px;
+}

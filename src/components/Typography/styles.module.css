@@ -49,3 +49,13 @@
   letter-spacing: 0.4000000059604645px;
   text-align: right;
 }
+
+.body2 {
+  font-family: Roboto;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.15000000596046448px;
+  text-align: left;
+}

@@ -12,6 +12,8 @@ import RecoverPasswordForm from './components/RecoverPasswordForm'
 import AppBar from './components/AppBar'
 import Logo from './components/Logo'
 import UserDropdown from './components/UserDropdown'
+import ListItem from './components/ListItem'
+import List from './components/List'
 
 import { signIn, signUp, getIdToken, decodeToken, checkIfUserIsLoggedIn, sendPasswordResetEmail } from './auth'
 
@@ -217,7 +219,25 @@ export class App extends React.Component {
                   userEmail={userEmail}
                   userAvatar={userAvatar}
                   onClick={() => this.setState((prevState) => ({ isUserDropdownOpen: !prevState.isUserDropdownOpen }))}
-                  contentList={isUserDropdownOpen ? 'contentList contentList' : null}
+                  contentList={
+                    isUserDropdownOpen ?
+                      <List
+                        className={classes.userDropdownList}
+                      >
+                        <ListItem
+                          icon={'profile'}
+                          text={'Profile'}
+                          disabled={true}
+                        />
+                        <ListItem
+                          icon={'log-out'}
+                          text={'Log out'}
+                          onClick={() => console.log('Log out')}
+                        />
+                      </List>
+                      :
+                      null
+                  }
                 />
               </AppBar>
             </div>
