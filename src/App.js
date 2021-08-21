@@ -14,6 +14,7 @@ import Logo from './components/Logo'
 import UserDropdown from './components/UserDropdown'
 import ListItem from './components/ListItem'
 import List from './components/List'
+import CourseCard from './components/CourseCard'
 
 import { signIn, signUp, getIdToken, decodeToken, checkIfUserIsLoggedIn, sendPasswordResetEmail, logOut } from './auth'
 
@@ -148,8 +149,18 @@ export class App extends React.Component {
   }
 
   fetchCourses = async () => {
-    const courses = await getAllCourses()
-    console.log(courses)
+    this.setState(() => ({ isLoading: true }))
+    try {
+      const courses = await getAllCourses()
+      this.setState(() => ({ courses }))
+    } catch (error) {
+      this.setState(() => ({
+        hasError: true,
+        errorMessage: error.data.error.message
+      }))
+    } finally {
+      this.setState(() => ({ isLoading: false }))
+    }
   }
 
   onUserLogin = () => {
@@ -219,7 +230,8 @@ export class App extends React.Component {
       createAccountSubmitted,
       recoverPasswordEmail,
       recoverPasswordEmailError,
-      recoverPasswordSubmitted
+      recoverPasswordSubmitted,
+      courses
     } = this.state
 
     return (
@@ -259,6 +271,17 @@ export class App extends React.Component {
                   }
                 />
               </AppBar>
+              <div>
+                {
+                  courses && courses.map((course) => {
+                    return (
+                      <CourseCard
+                        key={course.id}
+                      />
+                    )
+                  })
+                }
+              </div>
             </div>
             :
             notLoginUserRoute === 'LOGIN' ?
