@@ -12,6 +12,10 @@ import RecoverPasswordForm from './components/RecoverPasswordForm'
 
 import { signIn } from './auth'
 
+const EMAIL_VALIDATION_ERROR = 'Please type a valid e-mail!'
+const PASSWORD_VALIDATION_ERROR = 'Password must have at least 6 chars!'
+const REPEAT_PASSWORD_VALIDATION_ERROR = 'Passwords must be the same!'
+
 export class App extends React.Component {
   state = {
     // global state
@@ -32,18 +36,24 @@ export class App extends React.Component {
 
     // login page state
     loginEmail: '',
-    loginEmailError: '',
+    loginEmailError: EMAIL_VALIDATION_ERROR,
     loginPassword: '',
-    loginPasswordError: '',
+    loginPasswordError: PASSWORD_VALIDATION_ERROR,
     loginSubmitted: false,
 
     // create account page
     createAccountEmail: '',
+    createAccountEmailError: EMAIL_VALIDATION_ERROR,
     createAccountPassword: '',
+    createAccountPasswordError: PASSWORD_VALIDATION_ERROR,
     createAccountRepeatPassword: '',
+    createAccountRepeatPasswordError: REPEAT_PASSWORD_VALIDATION_ERROR,
+    createAccountSubmitted: false,
 
     // recover password page
     recoverPasswordEmail: '',
+    recoverPasswordEmailError: EMAIL_VALIDATION_ERROR,
+    recoverPasswordSubmitted: false,
 
     // course list page
     courses: null,
@@ -69,6 +79,24 @@ export class App extends React.Component {
     }
   }
 
+  onClickCreateAccount = async () => {
+    this.setState(() => ({ createAccountSubmitted: true }))
+
+    if (this.state.createAccountEmailError) return
+    if (this.state.createAccountPasswordError) return
+    if (this.state.createAccountRepeatPasswordError) return
+
+    console.log('onClickCreateAccount')
+  }
+
+  onClickRecover = async () => {
+    this.setState(() => ({ recoverPasswordSubmitted: true }))
+
+    if (this.state.recoverPasswordEmailError) return
+
+    console.log('onClickRecover')
+  }
+
   dismissError = () => {
     this.setState(() => ({
       hasError: false,
@@ -90,9 +118,15 @@ export class App extends React.Component {
       errorMessage,
       notLoginUserRoute,
       createAccountEmail,
+      createAccountEmailError,
       createAccountPassword,
+      createAccountPasswordError,
       createAccountRepeatPassword,
-      recoverPasswordEmail
+      createAccountRepeatPasswordError,
+      createAccountSubmitted,
+      recoverPasswordEmail,
+      recoverPasswordEmailError,
+      recoverPasswordSubmitted
     } = this.state
 
     return (
@@ -109,13 +143,13 @@ export class App extends React.Component {
                 onChangeEmail={(e) => {
                   this.setState(() => ({
                     loginEmail: e.target.value,
-                    loginEmailError: isEmail(e.target.value) ? '' : 'Please type a valid e-mail!'
+                    loginEmailError: isEmail(e.target.value) ? '' : EMAIL_VALIDATION_ERROR
                   }))
                 }}
                 onChangePassword={(e) => {
                   this.setState(() => ({
                     loginPassword: e.target.value,
-                    loginPasswordError: e.target.value.length >= 6 ? '' : 'Password must have at least 6 chars!'
+                    loginPasswordError: e.target.value.length >= 6 ? '' : PASSWORD_VALIDATION_ERROR
                   }))
                 }}
                 onClickLogin={this.onClickLogin}
@@ -128,12 +162,25 @@ export class App extends React.Component {
               <FullPageLayout>
                 <CreateAccountForm
                   email={createAccountEmail}
+                  emailError={createAccountSubmitted ? createAccountEmailError : undefined}
                   password={createAccountPassword}
+                  passwordError={createAccountSubmitted ? createAccountPasswordError : undefined}
                   repeatPassword={createAccountRepeatPassword}
-                  onChangeEmail={(e) => this.setState(() => ({ createAccountEmail: e.target.value }))}
-                  onChangePassword={(e) => this.setState(() => ({ createAccountPassword: e.target.value }))}
-                  onChangeRepeatPassword={(e) => this.setState(() => ({ createAccountRepeatPassword: e.target.value }))}
-                  onClickCreateAccount={() => console.log('onClickCreateAccount')}
+                  repeatPasswordError={createAccountSubmitted ? createAccountRepeatPasswordError : undefined}
+                  onChangeEmail={(e) => this.setState(() => ({
+                    createAccountEmail: e.target.value,
+                    createAccountEmailError: isEmail(e.target.value) ? '' : EMAIL_VALIDATION_ERROR
+                  }))}
+                  onChangePassword={(e) => this.setState(() => ({
+                    createAccountPassword: e.target.value,
+                    createAccountPasswordError: e.target.value.length >= 6 ? '' : PASSWORD_VALIDATION_ERROR,
+                    createAccountRepeatPasswordError: createAccountRepeatPassword === e.target.value ? '' : REPEAT_PASSWORD_VALIDATION_ERROR
+                  }))}
+                  onChangeRepeatPassword={(e) => this.setState(() => ({
+                    createAccountRepeatPassword: e.target.value,
+                    createAccountRepeatPasswordError: createAccountPassword === e.target.value ? '' : REPEAT_PASSWORD_VALIDATION_ERROR
+                  }))}
+                  onClickCreateAccount={this.onClickCreateAccount}
                   onClickBackToLogin={() => this.setState(() => ({ notLoginUserRoute: 'LOGIN' }))}
                 />
               </FullPageLayout>
@@ -142,8 +189,12 @@ export class App extends React.Component {
                 <FullPageLayout>
                   <RecoverPasswordForm
                     email={recoverPasswordEmail}
-                    onChangeEmail={(e) => this.setState(() => ({ recoverPasswordEmail: e.target.value }))}
-                    onClickRecover={() => console.log('onClickRecover')}
+                    emailError={recoverPasswordSubmitted ? recoverPasswordEmailError : undefined}
+                    onChangeEmail={(e) => this.setState(() => ({
+                      recoverPasswordEmail: e.target.value,
+                      recoverPasswordEmailError: isEmail(e.target.value) ? '' : EMAIL_VALIDATION_ERROR
+                    }))}
+                    onClickRecover={this.onClickRecover}
                     onClickBackToLogin={() => this.setState(() => ({ notLoginUserRoute: 'LOGIN' }))}
                   />
                 </FullPageLayout>
