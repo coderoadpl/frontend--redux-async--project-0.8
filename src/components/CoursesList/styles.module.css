@@ -10,9 +10,23 @@
   margin-bottom: 20px;
 }
 
+.isThirdLeft {
+  justify-content: flex-start;
+}
+
+.isThirdRight {
+  justify-content: flex-end;
+}
+
 @media (max-width: 1024px) {
   .courseCardWrapper {
     flex-basis: 50%;
+  }
+  .isThirdLeft {
+    justify-content: center;
+  }
+  .isThirdRight {
+    justify-content: center;
   }
 }
 
