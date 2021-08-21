@@ -236,6 +236,15 @@ export class App extends React.Component {
       searchPhrase
     } = this.state
 
+    const searchPhraseUpperCase = searchPhrase.toUpperCase()
+    const filteredCourses = courses && courses.filter((course) => {
+      return (
+        course.title.toUpperCase().includes(searchPhraseUpperCase) ||
+        course.category.toUpperCase().includes(searchPhraseUpperCase) ||
+        course.description.toUpperCase().includes(searchPhraseUpperCase)
+      )
+    })
+
     return (
       <div>
 
@@ -286,7 +295,7 @@ export class App extends React.Component {
                 }
                 contentMain={
                   <CoursesList
-                    courses={courses}
+                    courses={filteredCourses}
                   />
                 }
               />
