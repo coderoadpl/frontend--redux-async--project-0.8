@@ -15,6 +15,7 @@ import ListItem from './components/ListItem'
 import List from './components/List'
 import CoursesList from './components/CoursesList'
 import MainLayout from './components/MainLayout'
+import TextField from './components/TextField'
 
 import { signIn, signUp, getIdToken, decodeToken, checkIfUserIsLoggedIn, sendPasswordResetEmail, logOut } from './auth'
 
@@ -231,7 +232,8 @@ export class App extends React.Component {
       recoverPasswordEmail,
       recoverPasswordEmailError,
       recoverPasswordSubmitted,
-      courses
+      courses,
+      searchPhrase
     } = this.state
 
     return (
@@ -274,7 +276,14 @@ export class App extends React.Component {
                     />
                   </>
                 }
-                contentSearch={'contentSearch'}
+                contentSearch={
+                  <TextField
+                    className={classes.searchTextField}
+                    placeholder={'Type to search'}
+                    value={searchPhrase}
+                    onChange={(e) => this.setState(() => ({ searchPhrase: e.target.value }))}
+                  />
+                }
                 contentMain={
                   <CoursesList
                     courses={courses}
