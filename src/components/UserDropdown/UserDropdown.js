@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import Typography from '../Typography'
+import Avatar from '../Avatar'
 
 import classes from './styles.module.css'
 
@@ -32,7 +33,9 @@ export const UserDropdown = (props) => {
       <div
         className={classes.avatarWrapper}
       >
-
+        <Avatar
+          src={userAvatar}
+        />
       </div>
     </div>
   )

@@ -11,4 +11,9 @@
   align-items: flex-end;
 }
 
-.avatarWrapper {}
+.avatarWrapper {
+  padding-left: 11px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
