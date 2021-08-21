@@ -4,11 +4,26 @@
   justify-content: flex-end;
 }
 
+.userDisplayName {
+  color: rgba(0, 0, 0, 0.87);
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.userEmail {
+  color: rgba(0, 0, 0, 0.6);
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .textWrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
+  width: calc(100% - 51px);
 }
 
 .avatarWrapper {

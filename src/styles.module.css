@@ -5,4 +5,7 @@
     width: 142px;
   }
 
+  .userDropdown {
+    width: calc(100% - 154px);
+  }
 }

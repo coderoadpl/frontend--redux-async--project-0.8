@@ -208,6 +208,7 @@ export class App extends React.Component {
                   className={classes.logo}
                 />
                 <UserDropdown
+                  className={classes.userDropdown}
                   userDisplayName={userDisplayName}
                   userEmail={userEmail}
                   userAvatar={userAvatar}
