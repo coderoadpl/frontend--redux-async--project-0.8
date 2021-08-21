@@ -10,7 +10,7 @@ import LoginForm from './components/LoginForm'
 import CreateAccountForm from './components/CreateAccountForm'
 import RecoverPasswordForm from './components/RecoverPasswordForm'
 
-import { signIn, signUp, getIdToken, decodeToken, checkIfUserIsLoggedIn } from './auth'
+import { signIn, signUp, getIdToken, decodeToken, checkIfUserIsLoggedIn, sendPasswordResetEmail } from './auth'
 
 const EMAIL_VALIDATION_ERROR = 'Please type a valid e-mail!'
 const PASSWORD_VALIDATION_ERROR = 'Password must have at least 6 chars!'
@@ -117,7 +117,22 @@ export class App extends React.Component {
 
     if (this.state.recoverPasswordEmailError) return
 
-    console.log('onClickRecover')
+    this.setState(() => ({ isLoading: true }))
+    try {
+      await sendPasswordResetEmail(this.state.recoverPasswordEmail)
+      this.setState(() => ({
+        isInfoDisplayed: true,
+        infoMessage: 'Check your inbox!'
+      }))
+      this.onUserLogin()
+    } catch (error) {
+      this.setState(() => ({
+        hasError: true,
+        errorMessage: error.data.error.message
+      }))
+    } finally {
+      this.setState(() => ({ isLoading: false }))
+    }
   }
 
   onUserLogin = () => {
