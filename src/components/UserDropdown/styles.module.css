@@ -1,1 +1,14 @@
-.root {}
+.root {
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.textWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.avatarWrapper {}

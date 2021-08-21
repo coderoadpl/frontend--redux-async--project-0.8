@@ -171,6 +171,9 @@ export class App extends React.Component {
   render () {
     const {
       isUserLoggedIn,
+      userDisplayName,
+      userEmail,
+      userAvatar,
       loginEmail,
       loginEmailError,
       loginPassword,
@@ -204,7 +207,11 @@ export class App extends React.Component {
                 <Logo
                   className={classes.logo}
                 />
-                <UserDropdown />
+                <UserDropdown
+                  userDisplayName={userDisplayName}
+                  userEmail={userEmail}
+                  userAvatar={userAvatar}
+                />
               </AppBar>
             </div>
             :
