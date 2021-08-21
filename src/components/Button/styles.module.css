@@ -6,6 +6,9 @@
   border-radius: 4px;
   padding: 4px 10px 4px 10px;
   transition: background-color 0.35s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .contained {
@@ -33,4 +36,15 @@
 
 .text:hover {
   background-color: #ebebea;
+}
+
+.contained.primary.disabled, .contained.secondary.disabled, .text.disabled, .disabled {
+  background-color: rgba(0, 0, 0, 0.12);
+  color: rgba(0, 0, 0, 0.26);
+  box-shadow: none;
+  cursor: default;
+}
+
+.iconWrapper {
+  margin-right: 8px;
 }

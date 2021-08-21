@@ -277,6 +277,7 @@ export class App extends React.Component {
                     return (
                       <CourseCard
                         key={course.id}
+                        course={course}
                       />
                     )
                   })
