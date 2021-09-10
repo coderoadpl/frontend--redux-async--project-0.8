@@ -13,6 +13,8 @@ export const UserDropdown = (props) => {
     userEmail,
     userAvatar,
     contentList,
+    onOpenRequested,
+    onCloseRequested,
     ...otherProps
   } = props
 
@@ -23,6 +25,7 @@ export const UserDropdown = (props) => {
     >
       <div
         className={classes.wrapper}
+        onClick={onOpenRequested}
       >
         <div
           className={classes.textWrapper}
@@ -51,11 +54,18 @@ export const UserDropdown = (props) => {
 
       {
         contentList ?
-          <div
-            className={classes.listContainer}
-          >
-            {contentList}
-          </div>
+          <>
+            <div
+              className={classes.overlay}
+              onClick={onCloseRequested}
+            >
+            </div>
+            <div
+              className={classes.listContainer}
+            >
+              {contentList}
+            </div>
+          </>
           :
           null
       }
@@ -68,7 +78,9 @@ UserDropdown.propTypes = {
   userDisplayName: PropTypes.string,
   userEmail: PropTypes.string,
   userAvatar: PropTypes.string,
-  contentList: PropTypes.node
+  contentList: PropTypes.node,
+  onOpenRequested: PropTypes.func,
+  onCloseRequested: PropTypes.func
 }
 
 export default UserDropdown

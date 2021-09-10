@@ -262,7 +262,8 @@ export class App extends React.Component {
                       userDisplayName={userDisplayName}
                       userEmail={userEmail}
                       userAvatar={userAvatar}
-                      onClick={() => this.setState((prevState) => ({ isUserDropdownOpen: !prevState.isUserDropdownOpen }))}
+                      onOpenRequested={() => this.setState(() => ({ isUserDropdownOpen: true }))}
+                      onCloseRequested={() => this.setState(() => ({ isUserDropdownOpen: false }))}
                       contentList={
                         isUserDropdownOpen ?
                           <List
