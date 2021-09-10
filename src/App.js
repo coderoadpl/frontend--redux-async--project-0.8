@@ -43,11 +43,10 @@ export class App extends React.Component {
     if (userIsLoggedIn) this.onUserLogin()
   }
 
-  onClickLogin = async (email, password) => {
+  handleAsyncAction = async (asyncAction) => {
     this.setState(() => ({ isLoading: true }))
     try {
-      await signIn(email, password)
-      this.onUserLogin()
+      await asyncAction()
     } catch (error) {
       this.setState(() => ({
         hasError: true,
@@ -58,57 +57,40 @@ export class App extends React.Component {
     }
   }
 
+  onClickLogin = async (email, password) => {
+    this.handleAsyncAction(async () => {
+      await signIn(email, password)
+      this.onUserLogin()
+    })
+  }
+
   onClickCreateAccount = async (email, password) => {
-    this.setState(() => ({ isLoading: true }))
-    try {
+    this.handleAsyncAction(async () => {
       await signUp(email, password)
       this.setState(() => ({
         isInfoDisplayed: true,
         infoMessage: 'User account created. User is logged in!'
       }))
       this.onUserLogin()
-    } catch (error) {
-      this.setState(() => ({
-        hasError: true,
-        errorMessage: error.data.error.message
-      }))
-    } finally {
-      this.setState(() => ({ isLoading: false }))
-    }
+    })
   }
 
   onClickRecover = async (email) => {
-    this.setState(() => ({ isLoading: true }))
-    try {
+    this.handleAsyncAction(async () => {
       await sendPasswordResetEmail(email)
       this.setState(() => ({
         isInfoDisplayed: true,
         infoMessage: 'Check your inbox!'
       }))
       this.onUserLogin()
-    } catch (error) {
-      this.setState(() => ({
-        hasError: true,
-        errorMessage: error.data.error.message
-      }))
-    } finally {
-      this.setState(() => ({ isLoading: false }))
-    }
+    })
   }
 
   fetchCourses = async () => {
-    this.setState(() => ({ isLoading: true }))
-    try {
+    this.handleAsyncAction(async () => {
       const courses = await getAllCourses()
       this.setState(() => ({ courses }))
-    } catch (error) {
-      this.setState(() => ({
-        hasError: true,
-        errorMessage: error.data.error.message
-      }))
-    } finally {
-      this.setState(() => ({ isLoading: false }))
-    }
+    })
   }
 
   onUserLogin = () => {
