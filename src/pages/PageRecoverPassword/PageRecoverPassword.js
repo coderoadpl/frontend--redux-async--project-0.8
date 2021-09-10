@@ -12,17 +12,17 @@ import { EMAIL_VALIDATION_ERROR } from '../../consts'
 
 export class PageRecoverPassword extends React.Component {
   state = {
-    recoverPasswordEmail: '',
-    recoverPasswordEmailError: EMAIL_VALIDATION_ERROR,
-    recoverPasswordSubmitted: false
+    email: '',
+    emailError: EMAIL_VALIDATION_ERROR,
+    isSubmitted: false
   }
 
   onClickRecover = async () => {
-    this.setState(() => ({ recoverPasswordSubmitted: true }))
+    this.setState(() => ({ isSubmitted: true }))
 
-    if (this.state.recoverPasswordEmailError) return
+    if (this.state.emailError) return
 
-    this.props.onClickRecover(this.state.recoverPasswordEmail)
+    this.props.onClickRecover(this.state.email)
   }
 
   render () {
@@ -33,9 +33,9 @@ export class PageRecoverPassword extends React.Component {
     } = this.props
 
     const {
-      recoverPasswordEmail,
-      recoverPasswordEmailError,
-      recoverPasswordSubmitted
+      email,
+      emailError,
+      isSubmitted
     } = this.state
 
     return (
@@ -45,11 +45,11 @@ export class PageRecoverPassword extends React.Component {
       >
         <FullPageLayout>
           <RecoverPasswordForm
-            email={recoverPasswordEmail}
-            emailError={recoverPasswordSubmitted ? recoverPasswordEmailError : undefined}
+            email={email}
+            emailError={isSubmitted ? emailError : undefined}
             onChangeEmail={(e) => this.setState(() => ({
-              recoverPasswordEmail: e.target.value,
-              recoverPasswordEmailError: isEmail(e.target.value) ? '' : EMAIL_VALIDATION_ERROR
+              email: e.target.value,
+              emailError: isEmail(e.target.value) ? '' : EMAIL_VALIDATION_ERROR
             }))}
             onClickRecover={this.onClickRecover}
             onClickBackToLogin={onClickBackToLogin}
