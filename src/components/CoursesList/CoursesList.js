@@ -18,14 +18,17 @@ export const CoursesList = (props) => {
       {...otherProps}
     >
       {
-        courses && courses.map((course, i) => {
-          const isThirdLeft = i === 0 || (i) % 3 === 0
-          const isThirdRight = (i + 1) % 3 === 0
+          (!courses || courses.length === 0) ?
+            'No courses found'
+            :
+            courses.map((course, i) => {
+              const isThirdLeft = i === 0 || (i) % 3 === 0
+              const isThirdRight = (i + 1) % 3 === 0
 
-          return (
-            <div
-              key={course.id}
-              className={
+              return (
+                <div
+                  key={course.id}
+                  className={
                 [
                   classes.courseCardWrapper,
                   isThirdLeft ? classes.isThirdLeft : null,
@@ -34,13 +37,13 @@ export const CoursesList = (props) => {
                   .filter((className) => className)
                   .join(' ')
               }
-            >
-              <CourseCard
-                course={course}
-              />
-            </div>
-          )
-        })
+                >
+                  <CourseCard
+                    course={course}
+                  />
+                </div>
+              )
+            })
       }
     </div>
   )
