@@ -9,19 +9,11 @@ import Message from './components/Message'
 import LoginForm from './components/LoginForm'
 import CreateAccountForm from './components/CreateAccountForm'
 import RecoverPasswordForm from './components/RecoverPasswordForm'
-import Logo from './components/Logo'
-import UserDropdown from './components/UserDropdown'
-import ListItem from './components/ListItem'
-import List from './components/List'
-import CoursesList from './components/CoursesList'
-import MainLayout from './components/MainLayout'
-import TextField from './components/TextField'
 
 import { signIn, signUp, getIdToken, decodeToken, checkIfUserIsLoggedIn, sendPasswordResetEmail, logOut } from './auth'
 
 import { getAll as getAllCourses } from './api/courses'
-
-import classes from './styles.module.css'
+import PageCoursesList from './pages/PageCoursesList/PageCoursesList'
 
 const EMAIL_VALIDATION_ERROR = 'Please type a valid e-mail!'
 const PASSWORD_VALIDATION_ERROR = 'Password must have at least 6 chars!'
@@ -41,9 +33,6 @@ export class App extends React.Component {
     userDisplayName: '',
     userEmail: '',
     userAvatar: '',
-
-    // user dropdown
-    isUserDropdownOpen: false,
 
     // router state
     notLoginUserRoute: 'LOGIN', // 'CREATE-ACCOUNT' or 'RECOVER-PASSWORD'
@@ -69,9 +58,8 @@ export class App extends React.Component {
     recoverPasswordEmailError: EMAIL_VALIDATION_ERROR,
     recoverPasswordSubmitted: false,
 
-    // course list page
-    courses: null,
-    searchPhrase: ''
+    // courses
+    courses: null
   }
 
   async componentDidMount () {
@@ -210,7 +198,6 @@ export class App extends React.Component {
       userDisplayName,
       userEmail,
       userAvatar,
-      isUserDropdownOpen,
       loginEmail,
       loginEmailError,
       loginPassword,
@@ -232,75 +219,21 @@ export class App extends React.Component {
       recoverPasswordEmail,
       recoverPasswordEmailError,
       recoverPasswordSubmitted,
-      courses,
-      searchPhrase
+      courses
     } = this.state
-
-    const searchPhraseUpperCase = searchPhrase.toUpperCase()
-    const filteredCourses = courses && courses.filter((course) => {
-      return (
-        course.title.toUpperCase().includes(searchPhraseUpperCase) ||
-        course.category.toUpperCase().includes(searchPhraseUpperCase) ||
-        course.description.toUpperCase().includes(searchPhraseUpperCase)
-      )
-    })
 
     return (
       <div>
 
         {
           isUserLoggedIn ?
-            <div>
-              <MainLayout
-                contentAppBar={
-                  <>
-                    <Logo
-                      className={classes.logo}
-                    />
-                    <UserDropdown
-                      className={classes.userDropdown}
-                      userDisplayName={userDisplayName}
-                      userEmail={userEmail}
-                      userAvatar={userAvatar}
-                      onOpenRequested={() => this.setState(() => ({ isUserDropdownOpen: true }))}
-                      onCloseRequested={() => this.setState(() => ({ isUserDropdownOpen: false }))}
-                      contentList={
-                        isUserDropdownOpen ?
-                          <List
-                            className={classes.userDropdownList}
-                          >
-                            <ListItem
-                              icon={'profile'}
-                              text={'Profile'}
-                              disabled={true}
-                            />
-                            <ListItem
-                              icon={'log-out'}
-                              text={'Log out'}
-                              onClick={this.onClickLogOut}
-                            />
-                          </List>
-                          :
-                          null
-                      }
-                    />
-                  </>
-                }
-                contentSearch={
-                  <TextField
-                    className={classes.searchTextField}
-                    placeholder={'Type to search'}
-                    value={searchPhrase}
-                    onChange={(e) => this.setState(() => ({ searchPhrase: e.target.value }))}
-                  />
-                }
-                contentMain={
-                  <CoursesList
-                    courses={filteredCourses}
-                  />
-                }
-              />
-            </div>
+            <PageCoursesList
+              userDisplayName={userDisplayName}
+              userEmail={userEmail}
+              userAvatar={userAvatar}
+              courses={courses}
+              onClickLogOut={this.onClickLogOut}
+            />
             :
             notLoginUserRoute === 'LOGIN' ?
               <FullPageLayout>
