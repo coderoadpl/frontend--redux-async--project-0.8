@@ -52,6 +52,7 @@
 }
 
 .listContainer {
+  background-color: white;
   position: absolute;
   top: calc(100% + 14px);
   right: 4px;
