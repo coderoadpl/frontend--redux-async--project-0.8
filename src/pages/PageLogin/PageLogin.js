@@ -30,11 +30,13 @@ export class PageLogin extends React.Component {
 
   render () {
     const {
+      className,
+      onClickCreateAccount,
+      onClickForgotPassword,
       ...otherProps
     } = this.props
 
     const {
-      className,
       loginEmail,
       loginSubmitted,
       loginEmailError,
@@ -66,8 +68,8 @@ export class PageLogin extends React.Component {
               }))
             }}
             onClickLogin={this.onClickLogin}
-            onClickCreateAccount={() => this.setState(() => ({ notLoginUserRoute: 'CREATE-ACCOUNT' }))}
-            onClickForgotPassword={() => this.setState(() => ({ notLoginUserRoute: 'RECOVER-PASSWORD' }))}
+            onClickCreateAccount={onClickCreateAccount}
+            onClickForgotPassword={onClickForgotPassword}
           />
         </FullPageLayout>
       </div>
@@ -77,7 +79,9 @@ export class PageLogin extends React.Component {
 
 PageLogin.propTypes = {
   className: PropTypes.string,
-  onClickLogin: PropTypes.func.isRequired
+  onClickLogin: PropTypes.func.isRequired,
+  onClickCreateAccount: PropTypes.func,
+  onClickForgotPassword: PropTypes.func
 }
 
 export default PageLogin
