@@ -12,94 +12,87 @@ import { CoursePropType } from '../../components/CourseCard'
 
 import classes from './styles.module.css'
 
-export class PageCoursesList extends React.Component {
-  state = {
-    isUserDropdownOpen: false,
-    searchPhrase: ''
-  }
+export const PageCoursesList = (props) => {
+  const {
+    className,
+    userDisplayName,
+    userEmail,
+    userAvatar,
+    courses,
+    onClickLogOut,
+    ...otherProps
+  } = props
 
-  render () {
-    const {
-      className,
-      userDisplayName,
-      userEmail,
-      userAvatar,
-      courses,
-      onClickLogOut,
-      ...otherProps
-    } = this.props
+  const [isUserDropdownOpen, setIsUserDropdownOpen] = React.useState(false)
+  const [searchPhrase, setSearchPhrase] = React.useState('')
 
-    const {
-      isUserDropdownOpen,
-      searchPhrase
-    } = this.state
-
+  const filteredCourses = React.useMemo(() => {
     const searchPhraseUpperCase = searchPhrase.toUpperCase()
-    const filteredCourses = courses && courses.filter((course) => {
+    return courses && courses.filter((course) => {
       return (
         course.title.toUpperCase().includes(searchPhraseUpperCase) ||
         course.category.toUpperCase().includes(searchPhraseUpperCase) ||
         course.description.toUpperCase().includes(searchPhraseUpperCase)
       )
     })
+  }, [courses, searchPhrase])
 
-    return (
-      <div
-        className={`${classes.root}${className ? ` ${className}` : ''}`}
-        {...otherProps}
-      >
-        <MainLayout
-          contentAppBar={
-            <>
-              <Logo
-                className={classes.logo}
-              />
-              <UserDropdown
-                className={classes.userDropdown}
-                userDisplayName={userDisplayName}
-                userEmail={userEmail}
-                userAvatar={userAvatar}
-                onOpenRequested={() => this.setState(() => ({ isUserDropdownOpen: true }))}
-                onCloseRequested={() => this.setState(() => ({ isUserDropdownOpen: false }))}
-                contentList={
-                        isUserDropdownOpen ?
-                          <List
-                            className={classes.userDropdownList}
-                          >
-                            <ListItem
-                              icon={'profile'}
-                              text={'Profile'}
-                              disabled={true}
-                            />
-                            <ListItem
-                              icon={'log-out'}
-                              text={'Log out'}
-                              onClick={onClickLogOut}
-                            />
-                          </List>
-                          :
-                          null
-                      }
-              />
-            </>
-                }
-          contentSearch={
-            <TextField
-              className={classes.searchTextField}
-              placeholder={'Type to search'}
-              value={searchPhrase}
-              onChange={(e) => this.setState(() => ({ searchPhrase: e.target.value }))}
+  return (
+    <div
+      className={`${classes.root}${className ? ` ${className}` : ''}`}
+      {...otherProps}
+    >
+      <MainLayout
+        contentAppBar={
+          <>
+            <Logo
+              className={classes.logo}
             />
-                }
-          contentMain={
-            <CoursesList
-              courses={filteredCourses}
+            <UserDropdown
+              className={classes.userDropdown}
+              userDisplayName={userDisplayName}
+              userEmail={userEmail}
+              userAvatar={userAvatar}
+              onOpenRequested={() => setIsUserDropdownOpen(() => true)}
+              onCloseRequested={() => setIsUserDropdownOpen(() => false)}
+              contentList={
+                isUserDropdownOpen ?
+                  <List
+                    className={classes.userDropdownList}
+                  >
+                    <ListItem
+                      icon={'profile'}
+                      text={'Profile'}
+                      disabled={true}
+                    />
+                    <ListItem
+                      icon={'log-out'}
+                      text={'Log out'}
+                      onClick={onClickLogOut}
+                    />
+                  </List>
+                  :
+                  null
+              }
             />
-          }
-        />
-      </div>
-    )
-  }
+          </>
+        }
+        contentSearch={
+          <TextField
+            className={classes.searchTextField}
+            placeholder={'Type to search'}
+            value={searchPhrase}
+            onChange={(e) => setSearchPhrase(() => e.target.value)}
+          />
+        }
+        contentMain={
+          <CoursesList
+            courses={filteredCourses}
+          />
+        }
+      />
+    </div>
+  )
 }
 
 PageCoursesList.propTypes = {

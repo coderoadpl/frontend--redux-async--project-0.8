@@ -30,7 +30,7 @@ export class App extends React.Component {
     userAvatar: '',
 
     // router state
-    notLoginUserRoute: 'RECOVER-PASSWORD', // 'CREATE-ACCOUNT' or 'RECOVER-PASSWORD'
+    notLoginUserRoute: 'LOGIN', // 'CREATE-ACCOUNT' or 'RECOVER-PASSWORD'
 
     // courses
     courses: null
