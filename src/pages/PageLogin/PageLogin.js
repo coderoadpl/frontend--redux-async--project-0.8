@@ -10,72 +10,58 @@ import classes from './styles.module.css'
 
 import { EMAIL_VALIDATION_ERROR, PASSWORD_VALIDATION_ERROR } from '../../consts'
 
-export class PageLogin extends React.Component {
-  state = {
-    loginEmail: '',
-    loginEmailError: EMAIL_VALIDATION_ERROR,
-    loginPassword: '',
-    loginPasswordError: PASSWORD_VALIDATION_ERROR,
-    loginSubmitted: false
-  }
+export const PageLogin = (props) => {
+  const {
+    className,
+    onClickCreateAccount,
+    onClickForgotPassword,
+    onClickLogin: onClickLoginFromProps,
+    ...otherProps
+  } = props
 
-  onClickLogin = async () => {
-    this.setState(() => ({ loginSubmitted: true }))
+  const [loginEmail, setLoginEmail] = React.useState('')
+  const [loginEmailError, setLoginEmailError] = React.useState(EMAIL_VALIDATION_ERROR)
+  const [loginPassword, setLoginPassword] = React.useState('')
+  const [loginPasswordError, setLoginPasswordError] = React.useState(PASSWORD_VALIDATION_ERROR)
+  const [loginSubmitted, setLoginSubmitted] = React.useState(false)
 
-    if (this.state.loginEmailError) return
-    if (this.state.loginPasswordError) return
+  const onClickLogin = React.useCallback(async () => {
+    setLoginSubmitted(() => true)
 
-    this.props.onClickLogin(this.state.loginEmail, this.state.loginPassword)
-  }
+    if (loginEmailError) return
+    if (loginPasswordError) return
 
-  render () {
-    const {
-      className,
-      onClickCreateAccount,
-      onClickForgotPassword,
-      onClickLogin,
-      ...otherProps
-    } = this.props
+    onClickLoginFromProps(loginEmail, loginPassword)
+  }, [loginEmail, loginEmailError, loginPassword, loginPasswordError, onClickLoginFromProps])
 
-    const {
-      loginEmail,
-      loginSubmitted,
-      loginEmailError,
-      loginPassword,
-      loginPasswordError
-    } = this.state
+  React.useEffect(() => {
+    setLoginEmailError(isEmail(loginEmail) ? '' : EMAIL_VALIDATION_ERROR)
+  }, [loginEmail])
 
-    return (
-      <div
-        className={`${classes.root}${className ? ` ${className}` : ''}`}
-        {...otherProps}
-      >
-        <FullPageLayout>
-          <LoginForm
-            email={loginEmail}
-            emailError={loginSubmitted ? loginEmailError : undefined}
-            password={loginPassword}
-            passwordError={loginSubmitted ? loginPasswordError : undefined}
-            onChangeEmail={(e) => {
-              this.setState(() => ({
-                loginEmail: e.target.value,
-                loginEmailError: isEmail(e.target.value) ? '' : EMAIL_VALIDATION_ERROR
-              }))
-            }}
-            onChangePassword={(e) => {
-              this.setState(() => ({
-                loginPassword: e.target.value,
-                loginPasswordError: e.target.value.length >= 6 ? '' : PASSWORD_VALIDATION_ERROR
-              }))
-            }}
-            onClickLogin={this.onClickLogin}
-            onClickCreateAccount={onClickCreateAccount}
-            onClickForgotPassword={onClickForgotPassword}
-          />
-        </FullPageLayout>
-      </div>
-    )
-  }
+  React.useEffect(() => {
+    setLoginPasswordError(loginPassword.length >= 6 ? '' : PASSWORD_VALIDATION_ERROR)
+  }, [loginPassword])
+
+  return (
+    <div
+      className={`${classes.root}${className ? ` ${className}` : ''}`}
+      {...otherProps}
+    >
+      <FullPageLayout>
+        <LoginForm
+          email={loginEmail}
+          emailError={loginSubmitted ? loginEmailError : undefined}
+          password={loginPassword}
+          passwordError={loginSubmitted ? loginPasswordError : undefined}
+          onChangeEmail={(e) => setLoginEmail(() => e.target.value)}
+          onChangePassword={(e) => setLoginPassword(() => e.target.value)}
+          onClickLogin={onClickLogin}
+          onClickCreateAccount={onClickCreateAccount}
+          onClickForgotPassword={onClickForgotPassword}
+        />
+      </FullPageLayout>
+    </div>
+  )
 }
 
 PageLogin.propTypes = {
