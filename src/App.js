@@ -33,21 +33,9 @@ export const App = () => {
 
   const {
     isUserLoggedIn,
-    setIsUserLoggedIn,
-    setUserDisplayName,
-    setUserEmail,
-    setUserAvatar
+    setUser,
+    clearUser
   } = useAuthUser()
-
-  React.useEffect(() => {
-    (async () => {
-      setIsLoading(() => true)
-      const userIsLoggedIn = await checkIfUserIsLoggedIn()
-      setIsLoading(() => false)
-      if (userIsLoggedIn) this.onUserLogin()
-    })()
-    // mount only
-  }, [])
 
   const handleAsyncAction = React.useCallback(async (asyncAction) => {
     setIsLoading(() => true)
@@ -73,14 +61,15 @@ export const App = () => {
     if (!token) return
     const user = decodeToken(token)
 
-    // @TODO replace this token decoding with request for user data
-    setIsUserLoggedIn(() => true)
-    setUserDisplayName(() => '')
-    setUserEmail(() => user.email)
-    setUserAvatar(() => '')
+    // @TODO replace this token decoding with request for user dat
+    setUser({
+      displayName: '',
+      email: user.email,
+      avatar: ''
+    })
 
     fetchCourses()
-  }, [fetchCourses, setIsUserLoggedIn, setUserAvatar, setUserDisplayName, setUserEmail])
+  }, [fetchCourses, setUser])
 
   const onClickLogin = React.useCallback(async (email, password) => {
     handleAsyncAction(async () => {
@@ -109,11 +98,8 @@ export const App = () => {
 
   const onClickLogOut = React.useCallback(async () => {
     await logOut()
-    setIsUserLoggedIn(() => false)
-    setUserDisplayName(() => '')
-    setUserEmail(() => '')
-    setUserAvatar(() => '')
-  }, [setIsUserLoggedIn, setUserAvatar, setUserDisplayName, setUserEmail])
+    clearUser()
+  }, [clearUser])
 
   const dismissError = React.useCallback(() => {
     setHasError(() => false)
@@ -124,6 +110,16 @@ export const App = () => {
     setIsInfoDisplayed(() => false)
     setInfoMessage(() => '')
   }, [])
+
+  React.useEffect(() => {
+    (async () => {
+      setIsLoading(() => true)
+      const userIsLoggedIn = await checkIfUserIsLoggedIn()
+      setIsLoading(() => false)
+      if (userIsLoggedIn) onUserLogin()
+    })()
+    // mount only
+  }, [onUserLogin])
 
   return (
     <div>
