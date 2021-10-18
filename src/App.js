@@ -33,9 +33,6 @@ export const App = () => {
 
   const {
     isUserLoggedIn,
-    userDisplayName,
-    userEmail,
-    userAvatar,
     setIsUserLoggedIn,
     setUserDisplayName,
     setUserEmail,
@@ -134,9 +131,6 @@ export const App = () => {
       {
         isUserLoggedIn ?
           <PageCoursesList
-            userDisplayName={userDisplayName}
-            userEmail={userEmail}
-            userAvatar={userAvatar}
             courses={courses}
             onClickLogOut={onClickLogOut}
           />
