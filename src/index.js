@@ -3,11 +3,15 @@ import ReactDOM from 'react-dom'
 
 import App from './App'
 
+import RouterContextProvider from './contexts/RouterContext'
+
 import './index.css'
 import reportWebVitals from './reportWebVitals'
 
 ReactDOM.render(
-  <App />,
+  <RouterContextProvider>
+    <App />
+  </RouterContextProvider>,
   document.getElementById('root')
 )
 

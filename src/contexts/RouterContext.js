@@ -1,9 +1,35 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
-export const RouterContext = React.createContext({
+const initialContextState = {
   // 'CREATE-ACCOUNT' or 'RECOVER-PASSWORD'
   route: 'LOGIN',
   setRoute: () => {
     console.error('RouterContext.Provider not found!')
   }
-})
+}
+
+export const RouterContext = React.createContext(initialContextState)
+
+export const RouterContextProvider = (props) => {
+  const { children } = props
+
+  const [route, setRoute] = React.useState(initialContextState.route)
+
+  return (
+    <RouterContext.Provider
+      value={{
+        route,
+        setRoute
+      }}
+    >
+      {children}
+    </RouterContext.Provider>
+  )
+}
+
+RouterContextProvider.propTypes = {
+  children: PropTypes.node
+}
+
+export default RouterContextProvider
