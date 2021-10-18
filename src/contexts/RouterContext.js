@@ -16,6 +16,11 @@ export const useRouteTo = () => {
   return setRoute
 }
 
+export const useRoute = () => {
+  const { route } = React.useContext(RouterContext)
+  return route
+}
+
 export const RouterContextProvider = (props) => {
   const { children } = props
 

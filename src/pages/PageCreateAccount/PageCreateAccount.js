@@ -6,6 +6,8 @@ import isEmail from 'validator/lib/isEmail'
 import FullPageLayout from '../../components/FullPageLayout'
 import CreateAccountForm from '../../components/CreateAccountForm'
 
+import { useRouteTo } from '../../contexts/RouterContext'
+
 import classes from './styles.module.css'
 
 import { EMAIL_VALIDATION_ERROR, PASSWORD_VALIDATION_ERROR, REPEAT_PASSWORD_VALIDATION_ERROR } from '../../consts'
@@ -13,7 +15,6 @@ import { EMAIL_VALIDATION_ERROR, PASSWORD_VALIDATION_ERROR, REPEAT_PASSWORD_VALI
 export const PageCreateAccount = (props) => {
   const {
     className,
-    onClickBackToLogin,
     onClickCreateAccount: onClickCreateAccountFromProps,
     ...otherProps
   } = props
@@ -25,6 +26,9 @@ export const PageCreateAccount = (props) => {
   const [createAccountRepeatPassword, setCreateAccountRepeatPassword] = React.useState('')
   const [createAccountRepeatPasswordError, setCreateAccountRepeatPasswordError] = React.useState(REPEAT_PASSWORD_VALIDATION_ERROR)
   const [createAccountSubmitted, setCreateAccountSubmitted] = React.useState(false)
+
+  const routeTo = useRouteTo()
+  const onClickBackToLogin = React.useCallback(() => routeTo('LOGIN'), [routeTo])
 
   const onClickCreateAccount = React.useCallback(async () => {
     setCreateAccountSubmitted(() => true)
@@ -71,8 +75,7 @@ export const PageCreateAccount = (props) => {
 
 PageCreateAccount.propTypes = {
   className: PropTypes.string,
-  onClickCreateAccount: PropTypes.func,
-  onClickBackToLogin: PropTypes.func
+  onClickCreateAccount: PropTypes.func
 }
 
 export default PageCreateAccount
