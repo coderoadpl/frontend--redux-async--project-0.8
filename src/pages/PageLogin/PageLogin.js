@@ -1,12 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import { useNavigate } from 'react-router-dom'
+
 import isEmail from 'validator/lib/isEmail'
 
 import FullPageLayout from '../../components/FullPageLayout'
 import LoginForm from '../../components/LoginForm'
-
-import { useRouteTo } from '../../contexts/RouterContext'
 
 import classes from './styles.module.css'
 
@@ -25,9 +25,9 @@ export const PageLogin = (props) => {
   const [loginPasswordError, setLoginPasswordError] = React.useState(PASSWORD_VALIDATION_ERROR)
   const [loginSubmitted, setLoginSubmitted] = React.useState(false)
 
-  const routeTo = useRouteTo()
-  const onClickCreateAccount = React.useCallback(() => routeTo('CREATE-ACCOUNT'), [routeTo])
-  const onClickForgotPassword = React.useCallback(() => routeTo('RECOVER-PASSWORD'), [routeTo])
+  const navigate = useNavigate()
+  const onClickCreateAccount = React.useCallback(() => navigate('/create-account'), [navigate])
+  const onClickForgotPassword = React.useCallback(() => navigate('/recover-password'), [navigate])
 
   const onClickLogin = React.useCallback(async () => {
     setLoginSubmitted(() => true)

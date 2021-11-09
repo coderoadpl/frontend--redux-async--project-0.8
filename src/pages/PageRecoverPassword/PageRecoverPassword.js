@@ -1,12 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import { useNavigate } from 'react-router-dom'
+
 import isEmail from 'validator/lib/isEmail'
 
 import FullPageLayout from '../../components/FullPageLayout'
 import RecoverPasswordForm from '../../components/RecoverPasswordForm'
-
-import { useRouteTo } from '../../contexts/RouterContext'
 
 import classes from './styles.module.css'
 
@@ -23,8 +23,8 @@ export const PageRecoverPassword = (props) => {
   const [emailError, setEmailError] = React.useState(EMAIL_VALIDATION_ERROR)
   const [isSubmitted, setIsSubmitted] = React.useState(false)
 
-  const routeTo = useRouteTo()
-  const onClickBackToLogin = React.useCallback(() => routeTo('LOGIN'), [routeTo])
+  const navigate = useNavigate()
+  const onClickBackToLogin = React.useCallback(() => navigate('/'), [navigate])
 
   const onClickRecover = React.useCallback(async () => {
     setIsSubmitted(() => true)
