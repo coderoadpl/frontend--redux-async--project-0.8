@@ -6,21 +6,32 @@ import Typography from '../Typography'
 import TextField from '../TextField'
 import Button from '../Button'
 
+import { useFormContext } from 'react-hook-form'
+
+import isEmail from 'validator/lib/isEmail'
+
+import { EMAIL_VALIDATION_ERROR } from '../../consts'
+
 import classes from './styles.module.css'
 
 export const RecoverPasswordForm = (props) => {
   const {
     className,
-    email,
-    emailError,
-    onChangeEmail,
     onClickRecover,
     onClickBackToLogin,
     ...otherProps
   } = props
 
+  const methods = useFormContext()
+
+  const { register, formState: { errors } } = methods
+
+  const registeredEmailProps = register('email', {
+    validate: (email) => isEmail(email) || EMAIL_VALIDATION_ERROR
+  })
+
   return (
-    <div
+    <form
       className={`${classes.root}${className ? ` ${className}` : ''}`}
       {...otherProps}
     >
@@ -36,15 +47,14 @@ export const RecoverPasswordForm = (props) => {
       <TextField
         className={classes.textField}
         placeholder={'E-mail'}
-        value={email}
-        errorMessage={emailError}
-        onChange={onChangeEmail}
+        errorMessage={errors.email && errors.email.message}
+        {...registeredEmailProps}
       />
       <Button
         className={classes.button}
         variant={'contained'}
         color={'primary'}
-        onClick={onClickRecover}
+        type={'submit'}
       >
         RECOVER
       </Button>
@@ -55,15 +65,12 @@ export const RecoverPasswordForm = (props) => {
       >
         ️BACK TO LOGIN
       </Button>
-    </div>
+    </form>
   )
 }
 
 RecoverPasswordForm.propTypes = {
   className: PropTypes.string,
-  email: PropTypes.string.isRequired,
-  emailError: PropTypes.string,
-  onChangeEmail: PropTypes.func.isRequired,
   onClickRecover: PropTypes.func.isRequired,
   onClickBackToLogin: PropTypes.func.isRequired
 }
