@@ -11,6 +11,12 @@
   margin-bottom: 30px;
 }
 
+.avatar {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 10px;
+}
+
 .textField {
   width: 100%;
   margin-bottom: 10px;

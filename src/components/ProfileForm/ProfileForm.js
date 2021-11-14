@@ -6,6 +6,8 @@ import { useFormContext } from 'react-hook-form'
 import Typography from '../Typography'
 import TextField from '../TextField'
 import Button from '../Button'
+import FileInput from '../FileInput'
+import Avatar from '../Avatar'
 
 import { FIELD_IS_REQUIRED_VALIDATION_ERROR } from '../../consts'
 
@@ -14,6 +16,8 @@ import classes from './styles.module.css'
 export const ProfileForm = (props) => {
   const {
     className,
+    avatarSrc,
+    onAvatarChange,
     ...otherProps
   } = props
 
@@ -40,6 +44,18 @@ export const ProfileForm = (props) => {
       >
         User profile
       </Typography>
+      <Avatar
+        className={classes.avatar}
+        src={avatarSrc}
+      />
+      <FileInput
+        className={classes.button}
+        variant={'text'}
+        color={'primary'}
+        onChange={(e) => onAvatarChange(e.target.files[0])}
+      >
+        Change avatar
+      </FileInput>
       <TextField
         className={classes.textField}
         disabled={true}
@@ -66,7 +82,9 @@ export const ProfileForm = (props) => {
 }
 
 ProfileForm.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
+  avatarSrc: PropTypes.string,
+  onAvatarChange: PropTypes.func.isRequired
 }
 
 export default ProfileForm

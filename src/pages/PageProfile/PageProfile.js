@@ -23,8 +23,8 @@ export const PageProfile = (props) => {
 
   const {
     userDisplayName,
-    userEmail
-    // userAvatar
+    userEmail,
+    userAvatar
   } = useAuthUser()
 
   const methods = useForm({
@@ -68,6 +68,8 @@ export const PageProfile = (props) => {
             {...methods}
           >
             <ProfileForm
+              avatarSrc={userAvatar}
+              onAvatarChange={console.log}
               onSubmit={handleSubmit(async (data) => {
                 await onSaveChanges(data.displayName)
                 onClickGoBack()
