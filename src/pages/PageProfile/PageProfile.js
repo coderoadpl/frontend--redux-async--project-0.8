@@ -3,9 +3,12 @@ import PropTypes from 'prop-types'
 
 import { useNavigate } from 'react-router-dom'
 
+import { useForm, FormProvider } from 'react-hook-form'
+
 import Logo from '../../components/Logo'
 import MainLayout from '../../components/MainLayout'
 import Button from '../../components/Button'
+import ProfileForm from '../../components/ProfileForm'
 
 // import { useAuthUser } from '../../contexts/UserContext'
 
@@ -16,6 +19,8 @@ export const PageProfile = (props) => {
     className,
     ...otherProps
   } = props
+
+  const methods = useForm()
 
   // const {
   //   userDisplayName,
@@ -45,7 +50,11 @@ export const PageProfile = (props) => {
           </>
         }
         contentMain={
-          <>PageProfile</>
+          <FormProvider
+            {...methods}
+          >
+            <ProfileForm />
+          </FormProvider>
         }
       />
     </div>
