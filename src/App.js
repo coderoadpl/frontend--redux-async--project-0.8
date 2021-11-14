@@ -21,7 +21,7 @@ import { getAll as getAllCourses } from './api/courses'
 
 export const App = () => {
   // global state
-  const [isLoading, setIsLoading] = React.useState(false)
+  const [isLoading, setIsLoading] = React.useState(true)
   const [hasError, setHasError] = React.useState(false)
   const [errorMessage, setErrorMessage] = React.useState('')
   const [isInfoDisplayed, setIsInfoDisplayed] = React.useState(false)
@@ -49,11 +49,9 @@ export const App = () => {
   }, [])
 
   const fetchCourses = React.useCallback(async () => {
-    handleAsyncAction(async () => {
-      const courses = await getAllCourses()
-      setCourses(() => courses)
-    })
-  }, [handleAsyncAction])
+    const courses = await getAllCourses()
+    setCourses(() => courses)
+  }, [])
 
   const getUserData = React.useCallback(async () => {
     const user = await getUserDataAPICall()
@@ -123,19 +121,17 @@ export const App = () => {
   }, [])
 
   React.useEffect(() => {
-    (async () => {
-      setIsLoading(() => true)
+    handleAsyncAction(async () => {
       const userIsLoggedIn = await checkIfUserIsLoggedIn()
-      setIsLoading(() => false)
       if (userIsLoggedIn) {
         await Promise.all([
           getUserData(),
           fetchCourses()
         ])
       }
-    })()
+    })
     // mount only
-  }, [fetchCourses, getUserData])
+  }, [fetchCourses, getUserData, handleAsyncAction])
 
   return (
     <div>

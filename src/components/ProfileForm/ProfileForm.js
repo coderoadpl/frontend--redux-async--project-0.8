@@ -7,6 +7,8 @@ import Typography from '../Typography'
 import TextField from '../TextField'
 import Button from '../Button'
 
+import { FIELD_IS_REQUIRED_VALIDATION_ERROR } from '../../consts'
+
 import classes from './styles.module.css'
 
 export const ProfileForm = (props) => {
@@ -21,7 +23,10 @@ export const ProfileForm = (props) => {
 
   const registeredEmailProps = register('email')
   const registeredDisplayNameProps = register('displayName', {
-    required: true
+    required: {
+      value: true,
+      message: FIELD_IS_REQUIRED_VALIDATION_ERROR
+    }
   })
 
   return (
