@@ -6,26 +6,42 @@ import Typography from '../Typography'
 import TextField from '../TextField'
 import Button from '../Button'
 
+import { useFormContext } from 'react-hook-form'
+
+import isEmail from 'validator/lib/isEmail'
+
+import { EMAIL_VALIDATION_ERROR, PASSWORD_VALIDATION_ERROR } from '../../consts'
+
 import classes from './styles.module.css'
 
 export const LoginForm = (props) => {
   const {
     className,
-    email,
-    emailError,
-    password,
-    passwordError,
-    onChangeEmail,
-    onChangePassword,
-    onClickLogin,
+    onSubmit,
     onClickCreateAccount,
     onClickForgotPassword,
     ...otherProps
   } = props
 
+  const methods = useFormContext()
+
+  const { register, formState: { errors } } = methods
+
+  const registeredEmailProps = register('email', {
+    validate: (email) => isEmail(email) || EMAIL_VALIDATION_ERROR
+  })
+
+  const registeredPasswordProps = register('password', {
+    minLength: {
+      value: 6,
+      message: PASSWORD_VALIDATION_ERROR
+    }
+  })
+
   return (
-    <div
+    <form
       className={`${classes.root}${className ? ` ${className}` : ''}`}
+      onSubmit={onSubmit}
       {...otherProps}
     >
       <Logo
@@ -40,23 +56,21 @@ export const LoginForm = (props) => {
       <TextField
         className={classes.textField}
         placeholder={'E-mail'}
-        value={email}
-        errorMessage={emailError}
-        onChange={onChangeEmail}
+        errorMessage={errors.email && errors.email.message}
+        {...registeredEmailProps}
       />
       <TextField
         className={classes.textField}
         placeholder={'Password'}
         type={'password'}
-        value={password}
-        errorMessage={passwordError}
-        onChange={onChangePassword}
+        errorMessage={errors.password && errors.password.message}
+        {...registeredPasswordProps}
       />
       <Button
         className={classes.button}
         variant={'contained'}
         color={'primary'}
-        onClick={onClickLogin}
+        type={'submit'}
       >
         LOGIN
       </Button>
@@ -75,19 +89,13 @@ export const LoginForm = (props) => {
       >
         FORGOT PASSWORD
       </Button>
-    </div>
+    </form>
   )
 }
 
 LoginForm.propTypes = {
   className: PropTypes.string,
-  email: PropTypes.string.isRequired,
-  emailError: PropTypes.string,
-  password: PropTypes.string.isRequired,
-  passwordError: PropTypes.string,
-  onChangeEmail: PropTypes.func.isRequired,
-  onChangePassword: PropTypes.func.isRequired,
-  onClickLogin: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   onClickCreateAccount: PropTypes.func.isRequired,
   onClickForgotPassword: PropTypes.func.isRequired
 }
