@@ -15,7 +15,7 @@ import PageProfile from './pages/PageProfile/PageProfile'
 
 import { useAuthUser } from './contexts/UserContext'
 
-import { signIn, signUp, getIdToken, decodeToken, checkIfUserIsLoggedIn, sendPasswordResetEmail, logOut } from './auth'
+import { signIn, signUp, checkIfUserIsLoggedIn, sendPasswordResetEmail, logOut, updateUser, getUserData as getUserDataAPICall } from './auth'
 
 import { getAll as getAllCourses } from './api/courses'
 
@@ -55,45 +55,57 @@ export const App = () => {
     })
   }, [handleAsyncAction])
 
-  const onUserLogin = React.useCallback(() => {
-    const token = getIdToken()
-    if (!token) return
-    const user = decodeToken(token)
+  const getUserData = React.useCallback(async () => {
+    const user = await getUserDataAPICall()
+    console.log(user)
 
-    // @TODO replace this token decoding with request for user dat
     setUser({
-      displayName: '',
+      displayName: user.displayName,
       email: user.email,
       avatar: ''
     })
-
-    fetchCourses()
-  }, [fetchCourses, setUser])
+  }, [setUser])
 
   const onClickLogin = React.useCallback(async (email, password) => {
     handleAsyncAction(async () => {
       await signIn(email, password)
-      onUserLogin()
+      await Promise.all([
+        getUserData(),
+        fetchCourses()
+      ])
     })
-  }, [handleAsyncAction, onUserLogin])
+  }, [fetchCourses, getUserData, handleAsyncAction])
 
   const onClickCreateAccount = React.useCallback(async (email, password) => {
     handleAsyncAction(async () => {
       await signUp(email, password)
       setIsInfoDisplayed(() => true)
       setInfoMessage(() => 'User account created. User is logged in!')
-      onUserLogin()
+      await Promise.all([
+        getUserData(),
+        fetchCourses()
+      ])
     })
-  }, [handleAsyncAction, onUserLogin])
+  }, [fetchCourses, getUserData, handleAsyncAction])
 
   const onClickRecover = React.useCallback(async (email) => {
     handleAsyncAction(async () => {
       await sendPasswordResetEmail(email)
       setIsInfoDisplayed(() => true)
       setInfoMessage(() => 'Check your inbox!')
-      onUserLogin()
+      await Promise.all([
+        getUserData(),
+        fetchCourses()
+      ])
     })
-  }, [handleAsyncAction, onUserLogin])
+  }, [fetchCourses, getUserData, handleAsyncAction])
+
+  const onClickSaveChangesProfile = React.useCallback(async (displayName, photoUrl) => {
+    handleAsyncAction(async () => {
+      await updateUser(displayName, photoUrl)
+      await getUserData()
+    })
+  }, [getUserData, handleAsyncAction])
 
   const onClickLogOut = React.useCallback(async () => {
     await logOut()
@@ -115,10 +127,15 @@ export const App = () => {
       setIsLoading(() => true)
       const userIsLoggedIn = await checkIfUserIsLoggedIn()
       setIsLoading(() => false)
-      if (userIsLoggedIn) onUserLogin()
+      if (userIsLoggedIn) {
+        await Promise.all([
+          getUserData(),
+          fetchCourses()
+        ])
+      }
     })()
     // mount only
-  }, [onUserLogin])
+  }, [fetchCourses, getUserData])
 
   return (
     <div>
@@ -129,7 +146,9 @@ export const App = () => {
             <Route
               path={'/profile'}
               element={
-                <PageProfile />
+                <PageProfile
+                  onSaveChanges={onClickSaveChangesProfile}
+                />
               }
             />
             <Route
