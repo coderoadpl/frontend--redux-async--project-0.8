@@ -1,14 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import { useFormContext } from 'react-hook-form'
+
+import isEmail from 'validator/lib/isEmail'
+
 import Logo from '../Logo'
 import Typography from '../Typography'
 import TextField from '../TextField'
 import Button from '../Button'
-
-import { useFormContext } from 'react-hook-form'
-
-import isEmail from 'validator/lib/isEmail'
 
 import { EMAIL_VALIDATION_ERROR, PASSWORD_VALIDATION_ERROR } from '../../consts'
 
