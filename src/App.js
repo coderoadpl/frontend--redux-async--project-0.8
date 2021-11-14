@@ -11,6 +11,7 @@ import PageCoursesList from './pages/PageCoursesList/PageCoursesList'
 import PageLogin from './pages/PageLogin/PageLogin'
 import PageCreateAccount from './pages/PageCreateAccount'
 import PageRecoverPassword from './pages/PageRecoverPassword'
+import PageProfile from './pages/PageProfile/PageProfile'
 
 import { useAuthUser } from './contexts/UserContext'
 
@@ -125,6 +126,12 @@ export const App = () => {
       {
         isUserLoggedIn ?
           <Routes>
+            <Route
+              path={'/profile'}
+              element={
+                <PageProfile />
+              }
+            />
             <Route
               path={'*'}
               element={

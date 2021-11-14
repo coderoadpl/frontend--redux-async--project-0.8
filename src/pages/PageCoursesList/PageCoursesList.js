@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import { useNavigate } from 'react-router-dom'
+
 import Logo from '../../components/Logo'
 import UserDropdown from '../../components/UserDropdown'
 import ListItem from '../../components/ListItem'
@@ -24,6 +26,9 @@ export const PageCoursesList = (props) => {
 
   const [isUserDropdownOpen, setIsUserDropdownOpen] = React.useState(false)
   const [searchPhrase, setSearchPhrase] = React.useState('')
+
+  const navigate = useNavigate()
+  const onClickProfile = React.useCallback(() => navigate('/profile'), [navigate])
 
   const {
     userDisplayName,
@@ -68,7 +73,7 @@ export const PageCoursesList = (props) => {
                     <ListItem
                       icon={'profile'}
                       text={'Profile'}
-                      disabled={true}
+                      onClick={onClickProfile}
                     />
                     <ListItem
                       icon={'log-out'}
