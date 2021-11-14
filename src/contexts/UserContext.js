@@ -7,6 +7,7 @@ const errorProviderNotFound = () => {
 
 const initialContextState = {
   isUserLoggedIn: false,
+  userId: '',
   userDisplayName: '',
   userEmail: '',
   userAvatar: '',
@@ -32,12 +33,14 @@ export const UserContextProvider = (props) => {
   const [userDisplayName, setUserDisplayName] = React.useState(initialContextState.userDisplayName)
   const [userEmail, setUserEmail] = React.useState(initialContextState.userEmail)
   const [userAvatar, setUserAvatar] = React.useState(initialContextState.userAvatar)
+  const [userId, setUserId] = React.useState(initialContextState.userId)
 
   const clearUser = React.useCallback(() => {
     setIsUserLoggedIn(() => false)
     setUserDisplayName(() => '')
     setUserEmail(() => '')
     setUserAvatar(() => '')
+    setUserId(() => '')
   }, [])
 
   const setUser = React.useCallback((user) => {
@@ -45,12 +48,14 @@ export const UserContextProvider = (props) => {
     if (user.displayName !== undefined) setUserDisplayName(() => user.displayName)
     if (user.email !== undefined) setUserEmail(() => user.email)
     if (user.avatar !== undefined) setUserAvatar(() => user.avatar)
+    if (user.id !== undefined) setUserId(() => user.id)
   }, [])
 
   return (
     <UserContext.Provider
       value={{
         isUserLoggedIn,
+        userId,
         userDisplayName,
         userEmail,
         userAvatar,

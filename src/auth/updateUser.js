@@ -14,8 +14,8 @@ export const updateUser = (displayName, photoUrl) => {
       undefined
       :
         [
-          ...(!displayName ? ['DISPLAY_NAME'] : []),
-          ...(!photoUrl ? ['PHOTO_URL'] : [])
+          ...(displayName === null ? ['DISPLAY_NAME'] : []),
+          ...(photoUrl === null ? ['PHOTO_URL'] : [])
         ]
   )
 

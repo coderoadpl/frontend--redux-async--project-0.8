@@ -18,6 +18,9 @@ import { useAuthUser } from './contexts/UserContext'
 import { signIn, signUp, checkIfUserIsLoggedIn, sendPasswordResetEmail, logOut, updateUser, getUserData as getUserDataAPICall } from './auth'
 
 import { getAll as getAllCourses } from './api/courses'
+import { upload as uploadAvatar } from './api/avatar'
+
+import { signInWithFirebaseSDK, signOutWithFirebaseSDK } from './firebaseConfig'
 
 export const App = () => {
   // global state
@@ -32,6 +35,7 @@ export const App = () => {
 
   const {
     isUserLoggedIn,
+    userId,
     setUser,
     clearUser
   } = useAuthUser()
@@ -42,7 +46,7 @@ export const App = () => {
       await asyncAction()
     } catch (error) {
       setHasError(() => true)
-      setErrorMessage(() => error.data.error.message)
+      setErrorMessage(() => error.message || error.data.error.message)
     } finally {
       setIsLoading(() => false)
     }
@@ -55,12 +59,12 @@ export const App = () => {
 
   const getUserData = React.useCallback(async () => {
     const user = await getUserDataAPICall()
-    console.log(user)
 
     setUser({
+      id: user.localId,
       displayName: user.displayName,
       email: user.email,
-      avatar: ''
+      avatar: user.photoUrl
     })
   }, [setUser])
 
@@ -68,6 +72,7 @@ export const App = () => {
     handleAsyncAction(async () => {
       await signIn(email, password)
       await Promise.all([
+        signInWithFirebaseSDK(email, password),
         getUserData(),
         fetchCourses()
       ])
@@ -105,8 +110,19 @@ export const App = () => {
     })
   }, [getUserData, handleAsyncAction])
 
+  const onAvatarChangeProfile = React.useCallback(async (file) => {
+    handleAsyncAction(async () => {
+      const downloadURL = await uploadAvatar(userId, file, (progressPercent) => console.log(`Upload progress is ${progressPercent}%`))
+      await updateUser(undefined, downloadURL)
+      await getUserData()
+    })
+  }, [getUserData, handleAsyncAction, userId])
+
   const onClickLogOut = React.useCallback(async () => {
-    await logOut()
+    await Promise.all([
+      logOut(),
+      signOutWithFirebaseSDK()
+    ])
     clearUser()
   }, [clearUser])
 
@@ -143,6 +159,7 @@ export const App = () => {
               path={'/profile'}
               element={
                 <PageProfile
+                  onAvatarChange={onAvatarChangeProfile}
                   onSaveChanges={onClickSaveChangesProfile}
                 />
               }
