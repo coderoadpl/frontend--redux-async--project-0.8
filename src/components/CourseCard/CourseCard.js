@@ -10,6 +10,7 @@ export const CourseCard = (props) => {
   const {
     className,
     course = {},
+    onClick,
     ...otherProps
   } = props
 
@@ -71,7 +72,8 @@ export const CourseCard = (props) => {
       >
         <Button
           icon={'eye'}
-          disabled={true}
+          disabled={!onClick}
+          onClick={onClick}
         >
           VIEW COURSE
         </Button>
@@ -89,7 +91,8 @@ export const CoursePropType = PropTypes.shape({
 
 CourseCard.propTypes = {
   className: PropTypes.string,
-  course: CoursePropType
+  course: CoursePropType,
+  onClick: PropTypes.func
 }
 
 export default CourseCard

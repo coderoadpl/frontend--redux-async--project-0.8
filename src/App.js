@@ -11,7 +11,10 @@ import PageCoursesList from './pages/PageCoursesList/PageCoursesList'
 import PageLogin from './pages/PageLogin/PageLogin'
 import PageCreateAccount from './pages/PageCreateAccount'
 import PageRecoverPassword from './pages/PageRecoverPassword'
-import PageProfile from './pages/PageProfile/PageProfile'
+import PageProfile from './pages/PageProfile'
+import PageCourse from './pages/PageCourse'
+import PageCourseContentEmpty from './pages/PageCourseContentEmpty'
+import PageCourseContent from './pages/PageCourseContent'
 
 import { useAuthUser } from './contexts/UserContext'
 
@@ -164,6 +167,19 @@ export const App = () => {
                 />
               }
             />
+            <Route
+              path={'courses/:courseId'}
+              element={<PageCourse />}
+            >
+              <Route
+                index={true}
+                element={<PageCourseContentEmpty />}
+              />
+              <Route
+                path={':lessonId'}
+                element={<PageCourseContent />}
+              />
+            </Route>
             <Route
               path={'*'}
               element={

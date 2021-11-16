@@ -29,6 +29,7 @@ export const PageCoursesList = (props) => {
 
   const navigate = useNavigate()
   const onClickProfile = React.useCallback(() => navigate('/profile'), [navigate])
+  const onClickCourse = React.useCallback((courseId) => navigate(`/courses/${courseId}`), [navigate])
 
   const {
     userDisplayName,
@@ -98,6 +99,7 @@ export const PageCoursesList = (props) => {
         contentMain={
           <CoursesList
             courses={filteredCourses}
+            onClickCourse={onClickCourse}
           />
         }
       />
