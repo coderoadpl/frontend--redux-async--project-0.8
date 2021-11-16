@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom'
 
 import Ratio16x9 from '../../components/Ratio16x9'
 
-import { Box } from '@mui/material'
+import { useTheme, Box } from '@mui/material'
 
 export const PageCourse = (props) => {
   const {
@@ -13,12 +13,14 @@ export const PageCourse = (props) => {
     ...otherProps
   } = props
 
+  const theme = useTheme()
+
   return (
     <Box
       sx={{
         height: '100vh',
         overflow: 'hidden',
-        '@media (max-width: 599.95px)': {
+        [theme.breakpoints.down('sm')]: {
           overflow: 'auto'
         },
         ...sx
@@ -31,7 +33,7 @@ export const PageCourse = (props) => {
           height: '100%',
           display: 'flex',
           flexDirection: 'row',
-          '@media (max-width: 599.95px)': {
+          [theme.breakpoints.down('sm')]: {
             height: 'auto',
             minHeight: '100vh',
             flexDirection: 'column'
@@ -43,7 +45,7 @@ export const PageCourse = (props) => {
             flexGrow: 1,
             display: 'flex',
             flexDirection: 'column',
-            '@media (max-width: 599.95px)': {
+            [theme.breakpoints.down('sm')]: {
               flexGrow: 0
             }
           }}
@@ -76,14 +78,14 @@ export const PageCourse = (props) => {
           sx={{
             width: 320,
             height: '100%',
-            '@media (max-width: 599.95px)': {
+            backgroundColor: 'gray',
+            overflowX: 'hidden',
+            overflowY: 'auto',
+            [theme.breakpoints.down('sm')]: {
               width: '100%',
               height: 'auto',
               flexGrow: 1
-            },
-            backgroundColor: 'gray',
-            overflowX: 'hidden',
-            overflowY: 'auto'
+            }
           }}
         >
           SIDEBAR
