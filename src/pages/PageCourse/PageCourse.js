@@ -25,12 +25,15 @@ export const PageCourse = (props) => {
   const currentCourse = courses && courses.find((course) => {
     return course.id === courseId
   })
-  const { lessons: lessonsIds } = currentCourse
+  const lessonsIds = currentCourse && currentCourse.lessons
 
   React.useEffect(() => {
-    if (!lessonsIds) return
+    if (!lessonsIds) {
+      navigate('/')
+      return
+    }
     fetchLessonsByIds(lessonsIds)
-  }, [fetchLessonsByIds, lessonsIds])
+  }, [fetchLessonsByIds, lessonsIds, navigate])
 
   return (
     <CourseLayout
@@ -81,22 +84,25 @@ export const PageCourse = (props) => {
         </List>
       }
       slotTitle={
-        <Box
-          sx={{
-            margin: 2
-          }}
-        >
-          <Typography
-            variant={'h4'}
+        currentCourse ?
+          <Box
+            sx={{
+              margin: 2
+            }}
           >
-            {currentCourse.title}
-          </Typography>
-          <Typography
-            variant={'body1'}
-          >
-            {currentCourse.description}
-          </Typography>
-        </Box>
+            <Typography
+              variant={'h4'}
+            >
+              {currentCourse.title}
+            </Typography>
+            <Typography
+              variant={'body1'}
+            >
+              {currentCourse.description}
+            </Typography>
+          </Box>
+          :
+          null
       }
       {...otherProps}
     />
