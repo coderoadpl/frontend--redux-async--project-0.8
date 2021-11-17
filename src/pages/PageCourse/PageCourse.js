@@ -6,7 +6,7 @@ import CourseLayout from '../../templates/CourseLayout/CourseLayout'
 import { useParams, useNavigate, Outlet } from 'react-router-dom'
 
 import { Tooltip, Box, Typography, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
-import { Videocam as VideocamIcon } from '@mui/icons-material'
+import { Videocam as VideocamIcon, ChevronLeftSharp as GoBackIcon } from '@mui/icons-material'
 
 import { CoursePropType } from '../../components/CourseCard'
 
@@ -50,8 +50,25 @@ export const PageCourse = (props) => {
         </Box>
       }
       slotSidebar={
-        <List>
-          {
+        <>
+          <List>
+            <ListItemButton
+              onClick={() => navigate('/')}
+            >
+              <Typography
+                variant={'button'}
+                sx={{
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'center'
+                }}
+              >
+                <GoBackIcon /> GO BACK
+              </Typography>
+            </ListItemButton>
+          </List>
+          <List>
+            {
             lessons && lessons.map((lesson, i) => {
               return (
                 <Tooltip
@@ -81,7 +98,8 @@ export const PageCourse = (props) => {
               )
             })
           }
-        </List>
+          </List>
+        </>
       }
       slotTitle={
         currentCourse ?
