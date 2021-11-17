@@ -21,8 +21,9 @@ export const PageCourse = (props) => {
   const currentCourse = courses && courses.find((course) => {
     return course.id === courseId
   })
+  const { lessons } = currentCourse
 
-  console.log(courseId, courses, currentCourse)
+  console.log(lessons)
 
   return (
     <CourseLayout
