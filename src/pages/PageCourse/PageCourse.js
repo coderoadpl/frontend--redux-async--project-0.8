@@ -2,11 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import CourseLayout from '../../templates/CourseLayout/CourseLayout'
+import GoBackButton from '../../components/GoBackButton/GoBackButton'
 
 import { useParams, useNavigate, Outlet } from 'react-router-dom'
 
-import { Tooltip, Box, Typography, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
-import { Videocam as VideocamIcon, ChevronLeftSharp as GoBackIcon } from '@mui/icons-material'
+import { useMediaQuery, useTheme, Tooltip, Box, Typography, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
+import { Videocam as VideocamIcon } from '@mui/icons-material'
 
 import { CoursePropType } from '../../components/CourseCard'
 
@@ -18,6 +19,9 @@ export const PageCourse = (props) => {
     fetchLessonsByIds,
     ...otherProps
   } = props
+
+  const theme = useTheme()
+  const isXs = useMediaQuery(theme.breakpoints.down('sm'))
 
   const { courseId } = useParams()
   const navigate = useNavigate()
@@ -38,35 +42,37 @@ export const PageCourse = (props) => {
   return (
     <CourseLayout
       slotContent={
-        <Box
-          sx={{
-            color: 'white',
-            backgroundColor: 'black',
-            width: '100%',
-            height: '100%'
-          }}
-        >
-          <Outlet />
-        </Box>
+        <>
+          {
+            isXs ?
+              <GoBackButton
+                onClick={() => navigate('/')}
+              />
+              :
+              null
+          }
+          <Box
+            sx={{
+              color: 'white',
+              backgroundColor: 'black',
+              width: '100%',
+              height: '100%'
+            }}
+          >
+            <Outlet />
+          </Box>
+        </>
       }
       slotSidebar={
         <>
-          <List>
-            <ListItemButton
-              onClick={() => navigate('/')}
-            >
-              <Typography
-                variant={'button'}
-                sx={{
-                  width: '100%',
-                  display: 'flex',
-                  justifyContent: 'center'
-                }}
-              >
-                <GoBackIcon /> GO BACK
-              </Typography>
-            </ListItemButton>
-          </List>
+          {
+            isXs ?
+              null
+              :
+              <GoBackButton
+                onClick={() => navigate('/')}
+              />
+          }
           <List>
             {
             lessons && lessons.map((lesson, i) => {
