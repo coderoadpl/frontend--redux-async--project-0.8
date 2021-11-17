@@ -1,15 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import CourseLayout from '../../templates/CourseLayout/CourseLayout'
-import GoBackButton from '../../components/GoBackButton/GoBackButton'
+import GoBackButton from '../../components/GoBackButton'
+import LessonListItem, { LessonPropType } from '../../components/LessonListItem'
+import { CoursePropType } from '../../components/CourseCard'
+import CourseLayout from '../../templates/CourseLayout'
 
 import { useParams, useNavigate, Outlet } from 'react-router-dom'
 
-import { Tooltip, Box, Typography, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
-import { Videocam as VideocamIcon } from '@mui/icons-material'
-
-import { CoursePropType } from '../../components/CourseCard'
+import { Box, Typography, List } from '@mui/material'
 
 export const PageCourse = (props) => {
   const {
@@ -60,30 +59,12 @@ export const PageCourse = (props) => {
           {
             lessons && lessons.map((lesson, i) => {
               return (
-                <Tooltip
+                <LessonListItem
                   key={lesson.id}
-                  title={lesson.title}
-                  enterDelay={500}
-                >
-                  <ListItem
-                    disablePadding={true}
-                  >
-                    <ListItemButton
-                      sx={{ width: '100%' }}
-                      onClick={() => navigate(lesson.id)}
-                    >
-                      <ListItemIcon>
-                        <VideocamIcon/>
-                      </ListItemIcon>
-                      <ListItemText
-                        primaryTypographyProps={{
-                          noWrap: true
-                        }}
-                        primary={`${i + 1}. ${lesson.title}`}
-                      />
-                    </ListItemButton>
-                  </ListItem>
-                </Tooltip>
+                  index={i}
+                  lesson={lesson}
+                  onClick={() => navigate(lesson.id)}
+                />
               )
             })
           }
@@ -118,7 +99,7 @@ export const PageCourse = (props) => {
 PageCourse.propTypes = {
   sx: PropTypes.object,
   courses: PropTypes.arrayOf(CoursePropType),
-  lessons: PropTypes.arrayOf(PropTypes.object),
+  lessons: PropTypes.arrayOf(LessonPropType),
   fetchLessonsByIds: PropTypes.func
 }
 

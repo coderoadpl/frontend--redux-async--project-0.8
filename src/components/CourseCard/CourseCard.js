@@ -83,6 +83,7 @@ export const CourseCard = (props) => {
 }
 
 export const CoursePropType = PropTypes.shape({
+  id: PropTypes.string.isRequired,
   category: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
