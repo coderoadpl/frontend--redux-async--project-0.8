@@ -71,7 +71,7 @@ export const App = () => {
 
   const fetchLessonsByIdsWithLoaders = React.useCallback((lessonsIds) => {
     handleAsyncAction(async () => {
-      fetchLessonsByIds(lessonsIds)
+      await fetchLessonsByIds(lessonsIds)
     })
   }, [fetchLessonsByIds, handleAsyncAction])
 
