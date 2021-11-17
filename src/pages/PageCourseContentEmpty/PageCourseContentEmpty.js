@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { Box } from '@mui/material'
+import { useMediaQuery, useTheme, Box } from '@mui/material'
 
 export const PageCourseContentEmpty = (props) => {
   const {
@@ -9,14 +9,23 @@ export const PageCourseContentEmpty = (props) => {
     ...otherProps
   } = props
 
+  const theme = useTheme()
+  const isXs = useMediaQuery(theme.breakpoints.down('sm'))
+
   return (
     <Box
       sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        height: '100%',
+        textAlign: 'center',
         ...sx
       }}
       {...otherProps}
     >
-      PageCourseContentEmpty
+      Chose lesson form {isXs ? 'the bottom' : 'right side'} to play video
     </Box>
   )
 }
