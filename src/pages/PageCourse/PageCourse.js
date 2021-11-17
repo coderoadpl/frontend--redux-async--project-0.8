@@ -2,7 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import GoBackButton from '../../components/GoBackButton'
-import LessonsList from '../../components/LessonsList/LessonsList'
+import LessonsList from '../../components/LessonsList'
+import CourseTitle from '../../components/CourseTitle'
 import { LessonPropType } from '../../components/LessonListItem'
 import { CoursePropType } from '../../components/CourseCard'
 
@@ -10,7 +11,7 @@ import CourseLayout from '../../templates/CourseLayout'
 
 import { useParams, useNavigate, Outlet } from 'react-router-dom'
 
-import { Box, Typography } from '@mui/material'
+import { Box } from '@mui/material'
 
 export const PageCourse = (props) => {
   const {
@@ -64,22 +65,9 @@ export const PageCourse = (props) => {
       }
       slotTitle={
         currentCourse ?
-          <Box
-            sx={{
-              margin: 2
-            }}
-          >
-            <Typography
-              variant={'h4'}
-            >
-              {currentCourse.title}
-            </Typography>
-            <Typography
-              variant={'body1'}
-            >
-              {currentCourse.description}
-            </Typography>
-          </Box>
+          <CourseTitle
+            course={currentCourse}
+          />
           :
           null
       }
