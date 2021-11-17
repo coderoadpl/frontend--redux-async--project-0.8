@@ -6,9 +6,9 @@ import { useNavigate } from 'react-router-dom'
 import { useForm, FormProvider } from 'react-hook-form'
 
 import Logo from '../../components/Logo'
-import MainLayout from '../../components/MainLayout'
 import Button from '../../components/Button'
 import ProfileForm from '../../components/ProfileForm'
+import MainLayout from '../../templates/MainLayout'
 
 import { useAuthUser } from '../../contexts/UserContext'
 

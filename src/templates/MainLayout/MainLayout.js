@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import AppBar from '../AppBar'
-import Container from '../Container'
+import AppBar from '../../components/AppBar'
+import Container from '../../components/Container'
 
 import classes from './styles.module.css'
 
