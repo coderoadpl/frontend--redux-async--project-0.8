@@ -24,6 +24,10 @@ export const PageCourse = (props) => {
 
   const { courseId } = useParams()
   const navigate = useNavigate()
+  // we want to memoize `navigate` as we only navigating absolute paths
+  // and we do not want to trigger use effect on avery `navigate` changes
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const navigateMemoized = React.useMemo(() => navigate, [])
 
   const currentCourse = courses && courses.find((course) => {
     return course.id === courseId
@@ -32,11 +36,12 @@ export const PageCourse = (props) => {
 
   React.useEffect(() => {
     if (!lessonsIds) {
-      navigate('/')
+      navigateMemoized('/')
       return
     }
+    console.log('fetchLessonsByIds')
     fetchLessonsByIds(lessonsIds)
-  }, [fetchLessonsByIds, lessonsIds, navigate])
+  }, [fetchLessonsByIds, lessonsIds, navigateMemoized])
 
   return (
     <CourseLayout
