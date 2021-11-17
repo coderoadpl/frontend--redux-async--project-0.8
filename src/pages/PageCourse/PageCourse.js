@@ -2,13 +2,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import GoBackButton from '../../components/GoBackButton'
-import LessonListItem, { LessonPropType } from '../../components/LessonListItem'
+import LessonsList from '../../components/LessonsList/LessonsList'
+import { LessonPropType } from '../../components/LessonListItem'
 import { CoursePropType } from '../../components/CourseCard'
+
 import CourseLayout from '../../templates/CourseLayout'
 
 import { useParams, useNavigate, Outlet } from 'react-router-dom'
 
-import { Box, Typography, List } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 
 export const PageCourse = (props) => {
   const {
@@ -55,20 +57,10 @@ export const PageCourse = (props) => {
         </Box>
       }
       slotSidebar={
-        <List>
-          {
-            lessons && lessons.map((lesson, i) => {
-              return (
-                <LessonListItem
-                  key={lesson.id}
-                  index={i}
-                  lesson={lesson}
-                  onClick={() => navigate(lesson.id)}
-                />
-              )
-            })
-          }
-        </List>
+        <LessonsList
+          lessons={lessons}
+          onClickLesson={(lessonId) => navigate(lessonId)}
+        />
       }
       slotTitle={
         currentCourse ?
