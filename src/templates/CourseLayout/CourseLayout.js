@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import Ratio16x9 from '../../components/Ratio16x9'
 
-import { useTheme, Box } from '@mui/material'
+import { useMediaQuery, useTheme, Box } from '@mui/material'
 
 export const CourseLayout = (props) => {
   const {
@@ -11,10 +11,12 @@ export const CourseLayout = (props) => {
     slotContent,
     slotSidebar,
     slotTitle,
+    slotGoBackButton,
     ...otherProps
   } = props
 
   const theme = useTheme()
+  const isXs = useMediaQuery(theme.breakpoints.down('sm'))
 
   return (
     <Box
@@ -52,6 +54,7 @@ export const CourseLayout = (props) => {
           }}
         >
           <Ratio16x9>
+            { isXs ? slotGoBackButton : null }
             {slotContent}
           </Ratio16x9>
           <Box
@@ -78,6 +81,7 @@ export const CourseLayout = (props) => {
             }
           }}
         >
+          { isXs ? null : slotGoBackButton }
           {slotSidebar}
         </Box>
       </Box>
@@ -89,7 +93,8 @@ CourseLayout.propTypes = {
   sx: PropTypes.object,
   slotContent: PropTypes.node,
   slotSidebar: PropTypes.node,
-  slotTitle: PropTypes.node
+  slotTitle: PropTypes.node,
+  slotGoBackButton: PropTypes.node
 }
 
 export default CourseLayout
