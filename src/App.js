@@ -198,7 +198,11 @@ export const App = () => {
               />
               <Route
                 path={':lessonId'}
-                element={<PageCourseContent />}
+                element={
+                  <PageCourseContent
+                    lessons={lessons}
+                  />
+              }
               />
             </Route>
             <Route
