@@ -13,6 +13,8 @@ export const PageCourse = (props) => {
   const {
     sx,
     courses,
+    lessons,
+    fetchLessonsByIds,
     ...otherProps
   } = props
 
@@ -21,9 +23,12 @@ export const PageCourse = (props) => {
   const currentCourse = courses && courses.find((course) => {
     return course.id === courseId
   })
-  const { lessons } = currentCourse
+  const { lessons: lessonsIds } = currentCourse
 
-  console.log(lessons)
+  React.useEffect(() => {
+    if (!lessonsIds) return
+    fetchLessonsByIds(lessonsIds)
+  }, [fetchLessonsByIds, lessonsIds])
 
   return (
     <CourseLayout
@@ -58,7 +63,9 @@ export const PageCourse = (props) => {
 
 PageCourse.propTypes = {
   sx: PropTypes.object,
-  courses: PropTypes.arrayOf(CoursePropType)
+  courses: PropTypes.arrayOf(CoursePropType),
+  lessons: PropTypes.arrayOf(PropTypes.object),
+  fetchLessonsByIds: PropTypes.func
 }
 
 export default PageCourse
