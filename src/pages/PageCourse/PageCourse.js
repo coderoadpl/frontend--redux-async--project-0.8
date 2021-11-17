@@ -3,9 +3,10 @@ import PropTypes from 'prop-types'
 
 import CourseLayout from '../../templates/CourseLayout/CourseLayout'
 
-import { useParams, Outlet } from 'react-router-dom'
+import { useParams, useNavigate, Outlet } from 'react-router-dom'
 
-import { Box, Typography } from '@mui/material'
+import { Tooltip, Box, Typography, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
+import { Videocam as VideocamIcon } from '@mui/icons-material'
 
 import { CoursePropType } from '../../components/CourseCard'
 
@@ -19,6 +20,7 @@ export const PageCourse = (props) => {
   } = props
 
   const { courseId } = useParams()
+  const navigate = useNavigate()
 
   const currentCourse = courses && courses.find((course) => {
     return course.id === courseId
@@ -33,10 +35,50 @@ export const PageCourse = (props) => {
   return (
     <CourseLayout
       slotContent={
-        <Outlet />
+        <Box
+          sx={{
+            color: 'white',
+            backgroundColor: 'black',
+            width: '100%',
+            height: '100%'
+          }}
+        >
+          <Outlet />
+        </Box>
       }
       slotSidebar={
-        (new Array(111)).fill(<p>SIDEBAR</p>)
+        <List>
+          {
+            lessons && lessons.map((lesson, i) => {
+              return (
+                <Tooltip
+                  key={lesson.id}
+                  title={lesson.title}
+                  enterDelay={500}
+                >
+                  <ListItem
+                    disablePadding={true}
+                  >
+                    <ListItemButton
+                      sx={{ width: '100%' }}
+                      onClick={() => navigate(lesson.id)}
+                    >
+                      <ListItemIcon>
+                        <VideocamIcon/>
+                      </ListItemIcon>
+                      <ListItemText
+                        primaryTypographyProps={{
+                          noWrap: true
+                        }}
+                        primary={`${i + 1}. ${lesson.title}`}
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                </Tooltip>
+              )
+            })
+          }
+        </List>
       }
       slotTitle={
         <Box

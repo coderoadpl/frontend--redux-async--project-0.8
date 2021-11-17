@@ -52,15 +52,7 @@ export const CourseLayout = (props) => {
           }}
         >
           <Ratio16x9>
-            <Box
-              sx={{
-                backgroundColor: 'black',
-                width: '100%',
-                height: '100%'
-              }}
-            >
-              {slotContent}
-            </Box>
+            {slotContent}
           </Ratio16x9>
           <Box
             sx={{
@@ -74,6 +66,7 @@ export const CourseLayout = (props) => {
         </Box>
         <Box
           sx={{
+            flexShrink: 0,
             width: 320,
             height: '100%',
             overflowX: 'hidden',
@@ -85,14 +78,7 @@ export const CourseLayout = (props) => {
             }
           }}
         >
-          <Box
-            sx={{
-              backgroundColor: 'gray',
-              width: '100%'
-            }}
-          >
-            {slotSidebar}
-          </Box>
+          {slotSidebar}
         </Box>
       </Box>
     </Box>
