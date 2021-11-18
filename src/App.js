@@ -40,7 +40,7 @@ import {
 export const App = () => {
   const {
     isLoading,
-    // loadingMessage,
+    loadingMessage,
     hasError,
     errorMessage,
     isInfoDisplayed,
@@ -85,7 +85,7 @@ export const App = () => {
   const fetchLessonsByIdsWithLoaders = React.useCallback((lessonsIds) => {
     handleAsyncAction(async () => {
       await fetchLessonsByIds(lessonsIds)
-    })
+    }, 'Loading lessons...')
   }, [fetchLessonsByIds, handleAsyncAction])
 
   const getUserData = React.useCallback(async () => {
@@ -107,7 +107,7 @@ export const App = () => {
         getUserData(),
         fetchCourses()
       ])
-    })
+    }, 'Loging in...')
   }, [fetchCourses, getUserData, handleAsyncAction])
 
   const onClickCreateAccount = React.useCallback(async (email, password) => {
@@ -118,7 +118,7 @@ export const App = () => {
         getUserData(),
         fetchCourses()
       ])
-    })
+    }, 'Creating account...')
   }, [dispatch, fetchCourses, getUserData, handleAsyncAction])
 
   const onClickRecover = React.useCallback(async (email) => {
@@ -129,14 +129,14 @@ export const App = () => {
         getUserData(),
         fetchCourses()
       ])
-    })
+    }, 'Recovering password...')
   }, [dispatch, fetchCourses, getUserData, handleAsyncAction])
 
   const onClickSaveChangesProfile = React.useCallback(async (displayName, photoUrl) => {
     handleAsyncAction(async () => {
       await updateUser(displayName, photoUrl)
       await getUserData()
-    })
+    }, 'Saving profile...')
   }, [getUserData, handleAsyncAction])
 
   const onAvatarChangeProfile = React.useCallback(async (file) => {
@@ -144,7 +144,7 @@ export const App = () => {
       const downloadURL = await uploadAvatar(userId, file, (progressPercent) => console.log(`Upload progress is ${progressPercent}%`))
       await updateUser(undefined, downloadURL)
       await getUserData()
-    })
+    }, 'Saving profile...')
   }, [getUserData, handleAsyncAction, userId])
 
   const onClickLogOut = React.useCallback(async () => {
@@ -172,7 +172,7 @@ export const App = () => {
           fetchCourses()
         ])
       }
-    })
+    }, 'Loading app...')
     // mount only
   }, [fetchCourses, getUserData, handleAsyncAction])
 
@@ -262,7 +262,9 @@ export const App = () => {
 
       {
         isLoading ?
-          <FullPageLoader />
+          <FullPageLoader
+            message={loadingMessage}
+          />
           :
           null
       }
