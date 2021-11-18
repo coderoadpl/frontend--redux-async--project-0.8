@@ -1,13 +1,10 @@
 import React from 'react'
 
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 import { Routes, Route } from 'react-router-dom'
 
-import FullPageLayout from './components/FullPageLayout'
-import FullPageMessage from './components/FullPageMessage'
-import FullPageLoader from './components/FullPageLoader'
-import Message from './components/Message'
+import ViewLoadersOverlay from './views/ViewLoadersOverlay'
 
 import PageCoursesList from './pages/PageCoursesList/PageCoursesList'
 import PageLogin from './pages/PageLogin/PageLogin'
@@ -32,20 +29,10 @@ import {
   createActionSetLoading,
   createActionSetError,
   createActionSetInfo,
-  createActionRemoveLoading,
-  createActionRemoveError,
-  createActionRemoveInfo
+  createActionRemoveLoading
 } from './state/loaders'
 
 export const App = () => {
-  const {
-    isLoading,
-    loadingMessage,
-    hasError,
-    errorMessage,
-    isInfoDisplayed,
-    infoMessage
-  } = useSelector((state) => state.loaders)
   const dispatch = useDispatch()
 
   // courses
@@ -125,12 +112,8 @@ export const App = () => {
     handleAsyncAction(async () => {
       await sendPasswordResetEmail(email)
       dispatch(createActionSetInfo('Check your inbox!'))
-      await Promise.all([
-        getUserData(),
-        fetchCourses()
-      ])
     }, 'Recovering password...')
-  }, [dispatch, fetchCourses, getUserData, handleAsyncAction])
+  }, [dispatch, handleAsyncAction])
 
   const onClickSaveChangesProfile = React.useCallback(async (displayName, photoUrl) => {
     handleAsyncAction(async () => {
@@ -154,14 +137,6 @@ export const App = () => {
     ])
     clearUser()
   }, [clearUser])
-
-  const dismissError = React.useCallback(() => {
-    dispatch(createActionRemoveError())
-  }, [dispatch])
-
-  const dismissMessage = React.useCallback(() => {
-    dispatch(createActionRemoveInfo())
-  }, [dispatch])
 
   React.useEffect(() => {
     handleAsyncAction(async () => {
@@ -260,42 +235,7 @@ export const App = () => {
           null
       }
 
-      {
-        isLoading ?
-          <FullPageLoader
-            message={loadingMessage}
-          />
-          :
-          null
-      }
-
-      {
-        isInfoDisplayed ?
-          <FullPageMessage
-            message={infoMessage}
-            iconVariant={'info'}
-            buttonLabel={'OK'}
-            onButtonClick={dismissMessage}
-          />
-          :
-          null
-      }
-
-      {
-        hasError ?
-          <FullPageLayout
-            className={'wrapper-class'}
-          >
-            <Message
-              className={'regular-class'}
-              message={errorMessage}
-              iconVariant={'error'}
-              onButtonClick={dismissError}
-            />
-          </FullPageLayout>
-          :
-          null
-      }
+      <ViewLoadersOverlay />
 
     </div >
   )

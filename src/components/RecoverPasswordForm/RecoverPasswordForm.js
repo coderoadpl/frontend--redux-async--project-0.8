@@ -17,7 +17,6 @@ import classes from './styles.module.css'
 export const RecoverPasswordForm = (props) => {
   const {
     className,
-    onClickRecover,
     onClickBackToLogin,
     ...otherProps
   } = props
@@ -71,7 +70,6 @@ export const RecoverPasswordForm = (props) => {
 
 RecoverPasswordForm.propTypes = {
   className: PropTypes.string,
-  onClickRecover: PropTypes.func.isRequired,
   onClickBackToLogin: PropTypes.func.isRequired
 }
 
