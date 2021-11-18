@@ -17,12 +17,11 @@ import PageCourseContent from './pages/PageCourseContent'
 
 import { useAuthUser } from './contexts/UserContext'
 
-import { signIn, signUp, checkIfUserIsLoggedIn, sendPasswordResetEmail, logOut } from './auth'
+import { signIn, signUp, checkIfUserIsLoggedIn, sendPasswordResetEmail } from './auth'
 
 import { getMultiple as getMultipleLessons } from './api/lessons'
-import { getAll as getAllCourses } from './api/courses'
 
-import { signInWithFirebaseSDK, signOutWithFirebaseSDK } from './firebaseConfig'
+import { signInWithFirebaseSDK } from './firebaseConfig'
 
 import { createActionSetInfo } from './state/loaders'
 
@@ -31,22 +30,13 @@ import { handleAsyncAction } from './handleAsyncAction'
 export const App = () => {
   const dispatch = useDispatch()
 
-  // courses
-  const [courses, setCourses] = React.useState(null)
-
   // lessons
   const [lessons, setLessons] = React.useState(null)
 
   const {
     isUserLoggedIn,
-    getUserData,
-    clearUser
+    getUserData
   } = useAuthUser()
-
-  const fetchCourses = React.useCallback(async () => {
-    const courses = await getAllCourses()
-    setCourses(() => courses)
-  }, [])
 
   const fetchLessonsByIds = React.useCallback(async (lessonsIds) => {
     const lessons = await getMultipleLessons(lessonsIds)
@@ -64,22 +54,18 @@ export const App = () => {
       await signIn(email, password)
       await Promise.all([
         signInWithFirebaseSDK(email, password),
-        getUserData(),
-        fetchCourses()
+        getUserData()
       ])
     }, 'Loging in...')
-  }, [fetchCourses, getUserData])
+  }, [getUserData])
 
   const onClickCreateAccount = React.useCallback(async (email, password) => {
     handleAsyncAction(async () => {
       await signUp(email, password)
       dispatch(createActionSetInfo('User account created. User is logged in!'))
-      await Promise.all([
-        getUserData(),
-        fetchCourses()
-      ])
+      await getUserData()
     }, 'Creating account...')
-  }, [dispatch, fetchCourses, getUserData])
+  }, [dispatch, getUserData])
 
   const onClickRecover = React.useCallback(async (email) => {
     handleAsyncAction(async () => {
@@ -88,26 +74,15 @@ export const App = () => {
     }, 'Recovering password...')
   }, [dispatch])
 
-  const onClickLogOut = React.useCallback(async () => {
-    await Promise.all([
-      logOut(),
-      signOutWithFirebaseSDK()
-    ])
-    clearUser()
-  }, [clearUser])
-
   React.useEffect(() => {
     handleAsyncAction(async () => {
       const userIsLoggedIn = await checkIfUserIsLoggedIn()
       if (userIsLoggedIn) {
-        await Promise.all([
-          getUserData(),
-          fetchCourses()
-        ])
+        await getUserData()
       }
     }, 'Loading app...')
     // mount only
-  }, [fetchCourses, getUserData])
+  }, [getUserData])
 
   return (
     <div>
@@ -124,7 +99,7 @@ export const App = () => {
               element={
                 <PageCourse
                   lessons={lessons}
-                  courses={courses}
+                  courses={[]}
                   fetchLessonsByIds={fetchLessonsByIdsWithLoaders}
                 />
               }
@@ -145,10 +120,7 @@ export const App = () => {
             <Route
               path={'*'}
               element={
-                <PageCoursesList
-                  courses={courses}
-                  onClickLogOut={onClickLogOut}
-                />
+                <PageCoursesList />
               }
             />
           </Routes>

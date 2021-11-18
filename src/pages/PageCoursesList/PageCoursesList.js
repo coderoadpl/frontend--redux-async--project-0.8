@@ -9,21 +9,26 @@ import ListItem from '../../components/ListItem'
 import List from '../../components/List'
 import CoursesList from '../../components/CoursesList'
 import TextField from '../../components/TextField'
-import { CoursePropType } from '../../components/CourseCard'
 import MainLayout from '../../templates/MainLayout'
 
 import { useAuthUser } from '../../contexts/UserContext'
+
+import { logOut } from '../../auth'
+import { signOutWithFirebaseSDK } from '../../firebaseConfig'
+
+import { getAll as getAllCourses } from '../../api/courses'
+
+import { handleAsyncAction } from '../../handleAsyncAction'
 
 import classes from './styles.module.css'
 
 export const PageCoursesList = (props) => {
   const {
     className,
-    courses,
-    onClickLogOut,
     ...otherProps
   } = props
 
+  const [courses, setCourses] = React.useState(null)
   const [isUserDropdownOpen, setIsUserDropdownOpen] = React.useState(false)
   const [searchPhrase, setSearchPhrase] = React.useState('')
 
@@ -34,8 +39,30 @@ export const PageCoursesList = (props) => {
   const {
     userDisplayName,
     userEmail,
-    userAvatar
+    userAvatar,
+    clearUser
   } = useAuthUser()
+
+  const fetchCourses = React.useCallback(async () => {
+    handleAsyncAction(async () => {
+      const courses = await getAllCourses()
+      setCourses(() => courses)
+    }, 'Loading courses...')
+  }, [])
+
+  const onClickLogOut = React.useCallback(async () => {
+    await Promise.all([
+      logOut(),
+      signOutWithFirebaseSDK()
+    ])
+    clearUser()
+  }, [clearUser])
+
+  React.useEffect(() => {
+    fetchCourses()
+  // mount only
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const filteredCourses = React.useMemo(() => {
     const searchPhraseUpperCase = searchPhrase.toUpperCase()
@@ -108,9 +135,7 @@ export const PageCoursesList = (props) => {
 }
 
 PageCoursesList.propTypes = {
-  className: PropTypes.string,
-  courses: PropTypes.arrayOf(CoursePropType),
-  onClickLogOut: PropTypes.func
+  className: PropTypes.string
 }
 
 export default PageCoursesList
