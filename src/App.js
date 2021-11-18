@@ -90,11 +90,7 @@ export const App = () => {
               />
               <Route
                 path={':lessonId'}
-                element={
-                  <PageCourseContent
-                    lessons={[]}
-                  />
-              }
+                element={<PageCourseContent />}
               />
             </Route>
             <Route

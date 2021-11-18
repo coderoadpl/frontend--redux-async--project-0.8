@@ -7,10 +7,11 @@ import ReactPlayer from 'react-player'
 
 import { Box } from '@mui/material'
 
+import { useLessons } from '../../contexts/LessonsContext'
+
 export const PageCourseContent = (props) => {
   const {
     sx,
-    lessons,
     ...otherProps
   } = props
 
@@ -18,6 +19,8 @@ export const PageCourseContent = (props) => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const courseMainPath = pathname.replace(`/${lessonId}`, '')
+
+  const lessons = useLessons()
 
   const currentLesson = lessons && lessons.find((lesson) => {
     return lesson.id === lessonId
@@ -48,8 +51,7 @@ export const PageCourseContent = (props) => {
 }
 
 PageCourseContent.propTypes = {
-  sx: PropTypes.object,
-  lessons: PropTypes.arrayOf(PropTypes.object)
+  sx: PropTypes.object
 }
 
 export default PageCourseContent

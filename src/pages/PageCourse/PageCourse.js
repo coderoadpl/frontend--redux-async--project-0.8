@@ -11,6 +11,8 @@ import CourseTitle from '../../components/CourseTitle'
 
 import CourseLayout from '../../templates/CourseLayout'
 
+import LessonsContextProvider from '../../contexts/LessonsContext'
+
 import { getMultiple as getMultipleLessons } from '../../api/lessons'
 import { get as getCourse } from '../../api/courses'
 
@@ -76,7 +78,11 @@ export const PageCourse = (props) => {
             height: '100%'
           }}
         >
-          <Outlet />
+          <LessonsContextProvider
+            value={lessons}
+          >
+            <Outlet />
+          </LessonsContextProvider>
         </Box>
       }
       slotSidebar={
