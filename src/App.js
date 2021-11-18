@@ -25,12 +25,9 @@ import { upload as uploadAvatar } from './api/avatar'
 
 import { signInWithFirebaseSDK, signOutWithFirebaseSDK } from './firebaseConfig'
 
-import {
-  createActionSetLoading,
-  createActionSetError,
-  createActionSetInfo,
-  createActionRemoveLoading
-} from './state/loaders'
+import { createActionSetInfo } from './state/loaders'
+
+import { handleAsyncAction } from './handleAsyncAction'
 
 export const App = () => {
   const dispatch = useDispatch()
@@ -48,17 +45,6 @@ export const App = () => {
     clearUser
   } = useAuthUser()
 
-  const handleAsyncAction = React.useCallback(async (asyncAction, message) => {
-    dispatch(createActionSetLoading(message))
-    try {
-      await asyncAction()
-    } catch (error) {
-      dispatch(createActionSetError(error.message || error.data.error.message))
-    } finally {
-      dispatch(createActionRemoveLoading())
-    }
-  }, [dispatch])
-
   const fetchCourses = React.useCallback(async () => {
     const courses = await getAllCourses()
     setCourses(() => courses)
@@ -73,7 +59,7 @@ export const App = () => {
     handleAsyncAction(async () => {
       await fetchLessonsByIds(lessonsIds)
     }, 'Loading lessons...')
-  }, [fetchLessonsByIds, handleAsyncAction])
+  }, [fetchLessonsByIds])
 
   const getUserData = React.useCallback(async () => {
     const user = await getUserDataAPICall()
@@ -95,7 +81,7 @@ export const App = () => {
         fetchCourses()
       ])
     }, 'Loging in...')
-  }, [fetchCourses, getUserData, handleAsyncAction])
+  }, [fetchCourses, getUserData])
 
   const onClickCreateAccount = React.useCallback(async (email, password) => {
     handleAsyncAction(async () => {
@@ -106,21 +92,21 @@ export const App = () => {
         fetchCourses()
       ])
     }, 'Creating account...')
-  }, [dispatch, fetchCourses, getUserData, handleAsyncAction])
+  }, [dispatch, fetchCourses, getUserData])
 
   const onClickRecover = React.useCallback(async (email) => {
     handleAsyncAction(async () => {
       await sendPasswordResetEmail(email)
       dispatch(createActionSetInfo('Check your inbox!'))
     }, 'Recovering password...')
-  }, [dispatch, handleAsyncAction])
+  }, [dispatch])
 
   const onClickSaveChangesProfile = React.useCallback(async (displayName, photoUrl) => {
     handleAsyncAction(async () => {
       await updateUser(displayName, photoUrl)
       await getUserData()
     }, 'Saving profile...')
-  }, [getUserData, handleAsyncAction])
+  }, [getUserData])
 
   const onAvatarChangeProfile = React.useCallback(async (file) => {
     handleAsyncAction(async () => {
@@ -128,7 +114,7 @@ export const App = () => {
       await updateUser(undefined, downloadURL)
       await getUserData()
     }, 'Saving profile...')
-  }, [getUserData, handleAsyncAction, userId])
+  }, [getUserData, userId])
 
   const onClickLogOut = React.useCallback(async () => {
     await Promise.all([
@@ -149,7 +135,7 @@ export const App = () => {
       }
     }, 'Loading app...')
     // mount only
-  }, [fetchCourses, getUserData, handleAsyncAction])
+  }, [fetchCourses, getUserData])
 
   return (
     <div>
