@@ -2,9 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { useDispatch } from 'react-redux'
-
 import { useNavigate } from 'react-router-dom'
-
 import { useForm, FormProvider } from 'react-hook-form'
 
 import FullPageLayout from '../../components/FullPageLayout'
@@ -13,9 +11,7 @@ import CreateAccountForm from '../../components/CreateAccountForm'
 import { useAuthUser } from '../../contexts/UserContext'
 
 import { handleAsyncAction } from '../../handleAsyncAction'
-
 import { signUp } from '../../auth'
-
 import { createActionSetInfo } from '../../state/loaders'
 
 import classes from './styles.module.css'

@@ -1,7 +1,5 @@
 import React from 'react'
 
-import { useDispatch } from 'react-redux'
-
 import { Routes, Route } from 'react-router-dom'
 
 import ViewLoadersOverlay from './views/ViewLoadersOverlay'
@@ -17,26 +15,15 @@ import PageCourseContent from './pages/PageCourseContent'
 
 import { useAuthUser } from './contexts/UserContext'
 
-import { checkIfUserIsLoggedIn, sendPasswordResetEmail } from './auth'
-
-import { createActionSetInfo } from './state/loaders'
+import { checkIfUserIsLoggedIn } from './auth'
 
 import { handleAsyncAction } from './handleAsyncAction'
 
 export const App = () => {
-  const dispatch = useDispatch()
-
   const {
     isUserLoggedIn,
     getUserData
   } = useAuthUser()
-
-  const onClickRecover = React.useCallback(async (email) => {
-    handleAsyncAction(async () => {
-      await sendPasswordResetEmail(email)
-      dispatch(createActionSetInfo('Check your inbox!'))
-    }, 'Recovering password...')
-  }, [dispatch])
 
   React.useEffect(() => {
     handleAsyncAction(async () => {
@@ -99,11 +86,7 @@ export const App = () => {
             />
             <Route
               path={'/recover-password'}
-              element={
-                <PageRecoverPassword
-                  onClickRecover={onClickRecover}
-                />
-              }
+              element={<PageRecoverPassword />}
             />
           </Routes>
           :

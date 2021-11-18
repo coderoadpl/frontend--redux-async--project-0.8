@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { useNavigate } from 'react-router-dom'
-
 import { useForm, FormProvider } from 'react-hook-form'
 
 import FullPageLayout from '../../components/FullPageLayout'
@@ -12,7 +11,6 @@ import { useAuthUser } from '../../contexts/UserContext'
 
 import { signIn } from '../../auth'
 import { signInWithFirebaseSDK } from '../../firebaseConfig'
-
 import { handleAsyncAction } from '../../handleAsyncAction'
 
 import classes from './styles.module.css'
