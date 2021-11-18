@@ -12,20 +12,25 @@ import MainLayout from '../../templates/MainLayout'
 
 import { useAuthUser } from '../../contexts/UserContext'
 
+import { handleAsyncAction } from '../../handleAsyncAction'
+
+import { updateUser } from '../../auth'
+import { upload as uploadAvatar } from '../../api/avatar'
+
 import classes from './styles.module.css'
 
 export const PageProfile = (props) => {
   const {
     className,
-    onSaveChanges,
-    onAvatarChange,
     ...otherProps
   } = props
 
   const {
+    userId,
     userDisplayName,
     userEmail,
-    userAvatar
+    userAvatar,
+    getUserData
   } = useAuthUser()
 
   const methods = useForm({
@@ -35,6 +40,21 @@ export const PageProfile = (props) => {
     }
   })
   const { reset, handleSubmit } = methods
+
+  const onSaveChanges = React.useCallback(async (displayName, photoUrl) => {
+    handleAsyncAction(async () => {
+      await updateUser(displayName, photoUrl)
+      await getUserData()
+    }, 'Saving profile...')
+  }, [getUserData])
+
+  const onAvatarChange = React.useCallback(async (file) => {
+    handleAsyncAction(async () => {
+      const downloadURL = await uploadAvatar(userId, file, (progressPercent) => console.log(`Upload progress is ${progressPercent}%`))
+      await updateUser(undefined, downloadURL)
+      await getUserData()
+    }, 'Saving profile...')
+  }, [getUserData, userId])
 
   React.useEffect(() => {
     reset({
@@ -84,9 +104,7 @@ export const PageProfile = (props) => {
 }
 
 PageProfile.propTypes = {
-  className: PropTypes.string,
-  onSaveChanges: PropTypes.func.isRequired,
-  onAvatarChange: PropTypes.func.isRequired
+  className: PropTypes.string
 }
 
 export default PageProfile

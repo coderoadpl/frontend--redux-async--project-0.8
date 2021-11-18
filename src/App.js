@@ -17,11 +17,10 @@ import PageCourseContent from './pages/PageCourseContent'
 
 import { useAuthUser } from './contexts/UserContext'
 
-import { signIn, signUp, checkIfUserIsLoggedIn, sendPasswordResetEmail, logOut, updateUser, getUserData as getUserDataAPICall } from './auth'
+import { signIn, signUp, checkIfUserIsLoggedIn, sendPasswordResetEmail, logOut } from './auth'
 
 import { getMultiple as getMultipleLessons } from './api/lessons'
 import { getAll as getAllCourses } from './api/courses'
-import { upload as uploadAvatar } from './api/avatar'
 
 import { signInWithFirebaseSDK, signOutWithFirebaseSDK } from './firebaseConfig'
 
@@ -40,8 +39,7 @@ export const App = () => {
 
   const {
     isUserLoggedIn,
-    userId,
-    setUser,
+    getUserData,
     clearUser
   } = useAuthUser()
 
@@ -60,17 +58,6 @@ export const App = () => {
       await fetchLessonsByIds(lessonsIds)
     }, 'Loading lessons...')
   }, [fetchLessonsByIds])
-
-  const getUserData = React.useCallback(async () => {
-    const user = await getUserDataAPICall()
-
-    setUser({
-      id: user.localId,
-      displayName: user.displayName,
-      email: user.email,
-      avatar: user.photoUrl
-    })
-  }, [setUser])
 
   const onClickLogin = React.useCallback(async (email, password) => {
     handleAsyncAction(async () => {
@@ -101,21 +88,6 @@ export const App = () => {
     }, 'Recovering password...')
   }, [dispatch])
 
-  const onClickSaveChangesProfile = React.useCallback(async (displayName, photoUrl) => {
-    handleAsyncAction(async () => {
-      await updateUser(displayName, photoUrl)
-      await getUserData()
-    }, 'Saving profile...')
-  }, [getUserData])
-
-  const onAvatarChangeProfile = React.useCallback(async (file) => {
-    handleAsyncAction(async () => {
-      const downloadURL = await uploadAvatar(userId, file, (progressPercent) => console.log(`Upload progress is ${progressPercent}%`))
-      await updateUser(undefined, downloadURL)
-      await getUserData()
-    }, 'Saving profile...')
-  }, [getUserData, userId])
-
   const onClickLogOut = React.useCallback(async () => {
     await Promise.all([
       logOut(),
@@ -145,12 +117,7 @@ export const App = () => {
           <Routes>
             <Route
               path={'/profile'}
-              element={
-                <PageProfile
-                  onAvatarChange={onAvatarChangeProfile}
-                  onSaveChanges={onClickSaveChangesProfile}
-                />
-              }
+              element={<PageProfile />}
             />
             <Route
               path={'courses/:courseId'}

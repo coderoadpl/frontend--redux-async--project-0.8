@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import { getUserData as getUserDataAPICall } from '../auth'
+
 const errorProviderNotFound = () => {
   console.error('UserContext.Provider not found!')
 }
@@ -11,11 +13,9 @@ const initialContextState = {
   userDisplayName: '',
   userEmail: '',
   userAvatar: '',
-  setIsUserLoggedIn: errorProviderNotFound,
-  setUserDisplayName: errorProviderNotFound,
-  setUserEmail: errorProviderNotFound,
-  setUserAvatar: errorProviderNotFound,
-  clearUser: errorProviderNotFound
+  clearUser: errorProviderNotFound,
+  setUser: errorProviderNotFound,
+  getUserData: errorProviderNotFound
 }
 
 export const UserContext = React.createContext(initialContextState)
@@ -51,6 +51,17 @@ export const UserContextProvider = (props) => {
     if (user.id !== undefined) setUserId(() => user.id)
   }, [])
 
+  const getUserData = React.useCallback(async () => {
+    const user = await getUserDataAPICall()
+
+    setUser({
+      id: user.localId,
+      displayName: user.displayName,
+      email: user.email,
+      avatar: user.photoUrl
+    })
+  }, [setUser])
+
   return (
     <UserContext.Provider
       value={{
@@ -60,7 +71,8 @@ export const UserContextProvider = (props) => {
         userEmail,
         userAvatar,
         clearUser,
-        setUser
+        setUser,
+        getUserData
       }}
     >
       {children}
