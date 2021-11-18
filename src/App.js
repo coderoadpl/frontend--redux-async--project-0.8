@@ -17,7 +17,7 @@ import PageCourseContent from './pages/PageCourseContent'
 
 import { useAuthUser } from './contexts/UserContext'
 
-import { signUp, checkIfUserIsLoggedIn, sendPasswordResetEmail } from './auth'
+import { checkIfUserIsLoggedIn, sendPasswordResetEmail } from './auth'
 
 import { createActionSetInfo } from './state/loaders'
 
@@ -30,14 +30,6 @@ export const App = () => {
     isUserLoggedIn,
     getUserData
   } = useAuthUser()
-
-  const onClickCreateAccount = React.useCallback(async (email, password) => {
-    handleAsyncAction(async () => {
-      await signUp(email, password)
-      dispatch(createActionSetInfo('User account created. User is logged in!'))
-      await getUserData()
-    }, 'Creating account...')
-  }, [dispatch, getUserData])
 
   const onClickRecover = React.useCallback(async (email) => {
     handleAsyncAction(async () => {
@@ -102,9 +94,7 @@ export const App = () => {
             <Route
               path={'/create-account'}
               element={
-                <PageCreateAccount
-                  onClickCreateAccount={onClickCreateAccount}
-                />
+                <PageCreateAccount />
               }
             />
             <Route
