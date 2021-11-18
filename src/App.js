@@ -17,9 +17,7 @@ import PageCourseContent from './pages/PageCourseContent'
 
 import { useAuthUser } from './contexts/UserContext'
 
-import { signIn, signUp, checkIfUserIsLoggedIn, sendPasswordResetEmail } from './auth'
-
-import { signInWithFirebaseSDK } from './firebaseConfig'
+import { signUp, checkIfUserIsLoggedIn, sendPasswordResetEmail } from './auth'
 
 import { createActionSetInfo } from './state/loaders'
 
@@ -32,16 +30,6 @@ export const App = () => {
     isUserLoggedIn,
     getUserData
   } = useAuthUser()
-
-  const onClickLogin = React.useCallback(async (email, password) => {
-    handleAsyncAction(async () => {
-      await signIn(email, password)
-      await Promise.all([
-        signInWithFirebaseSDK(email, password),
-        getUserData()
-      ])
-    }, 'Loging in...')
-  }, [getUserData])
 
   const onClickCreateAccount = React.useCallback(async (email, password) => {
     handleAsyncAction(async () => {
@@ -109,11 +97,7 @@ export const App = () => {
           <Routes>
             <Route
               path={'*'}
-              element={
-                <PageLogin
-                  onClickLogin={onClickLogin}
-                />
-              }
+              element={<PageLogin />}
             />
             <Route
               path={'/create-account'}
