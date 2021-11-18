@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { useSelector, useDispatch } from 'react-redux'
+
 import { Routes, Route } from 'react-router-dom'
 
 import FullPageLayout from './components/FullPageLayout'
@@ -26,13 +28,25 @@ import { upload as uploadAvatar } from './api/avatar'
 
 import { signInWithFirebaseSDK, signOutWithFirebaseSDK } from './firebaseConfig'
 
+import {
+  createActionSetLoading,
+  createActionSetError,
+  createActionSetInfo,
+  createActionRemoveLoading,
+  createActionRemoveError,
+  createActionRemoveInfo
+} from './state/loaders'
+
 export const App = () => {
-  // global state
-  const [isLoading, setIsLoading] = React.useState(true)
-  const [hasError, setHasError] = React.useState(false)
-  const [errorMessage, setErrorMessage] = React.useState('')
-  const [isInfoDisplayed, setIsInfoDisplayed] = React.useState(false)
-  const [infoMessage, setInfoMessage] = React.useState('')
+  const {
+    isLoading,
+    // loadingMessage,
+    hasError,
+    errorMessage,
+    isInfoDisplayed,
+    infoMessage
+  } = useSelector((state) => state.loaders)
+  const dispatch = useDispatch()
 
   // courses
   const [courses, setCourses] = React.useState(null)
@@ -47,17 +61,16 @@ export const App = () => {
     clearUser
   } = useAuthUser()
 
-  const handleAsyncAction = React.useCallback(async (asyncAction) => {
-    setIsLoading(() => true)
+  const handleAsyncAction = React.useCallback(async (asyncAction, message) => {
+    dispatch(createActionSetLoading(message))
     try {
       await asyncAction()
     } catch (error) {
-      setHasError(() => true)
-      setErrorMessage(() => error.message || error.data.error.message)
+      dispatch(createActionSetError(error.message || error.data.error.message))
     } finally {
-      setIsLoading(() => false)
+      dispatch(createActionRemoveLoading())
     }
-  }, [])
+  }, [dispatch])
 
   const fetchCourses = React.useCallback(async () => {
     const courses = await getAllCourses()
@@ -100,26 +113,24 @@ export const App = () => {
   const onClickCreateAccount = React.useCallback(async (email, password) => {
     handleAsyncAction(async () => {
       await signUp(email, password)
-      setIsInfoDisplayed(() => true)
-      setInfoMessage(() => 'User account created. User is logged in!')
+      dispatch(createActionSetInfo('User account created. User is logged in!'))
       await Promise.all([
         getUserData(),
         fetchCourses()
       ])
     })
-  }, [fetchCourses, getUserData, handleAsyncAction])
+  }, [dispatch, fetchCourses, getUserData, handleAsyncAction])
 
   const onClickRecover = React.useCallback(async (email) => {
     handleAsyncAction(async () => {
       await sendPasswordResetEmail(email)
-      setIsInfoDisplayed(() => true)
-      setInfoMessage(() => 'Check your inbox!')
+      dispatch(createActionSetInfo('Check your inbox!'))
       await Promise.all([
         getUserData(),
         fetchCourses()
       ])
     })
-  }, [fetchCourses, getUserData, handleAsyncAction])
+  }, [dispatch, fetchCourses, getUserData, handleAsyncAction])
 
   const onClickSaveChangesProfile = React.useCallback(async (displayName, photoUrl) => {
     handleAsyncAction(async () => {
@@ -145,14 +156,12 @@ export const App = () => {
   }, [clearUser])
 
   const dismissError = React.useCallback(() => {
-    setHasError(() => false)
-    setErrorMessage(() => '')
-  }, [])
+    dispatch(createActionRemoveError())
+  }, [dispatch])
 
   const dismissMessage = React.useCallback(() => {
-    setIsInfoDisplayed(() => false)
-    setInfoMessage(() => '')
-  }, [])
+    dispatch(createActionRemoveInfo())
+  }, [dispatch])
 
   React.useEffect(() => {
     handleAsyncAction(async () => {
