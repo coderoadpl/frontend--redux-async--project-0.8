@@ -19,8 +19,6 @@ import { useAuthUser } from './contexts/UserContext'
 
 import { signIn, signUp, checkIfUserIsLoggedIn, sendPasswordResetEmail } from './auth'
 
-import { getMultiple as getMultipleLessons } from './api/lessons'
-
 import { signInWithFirebaseSDK } from './firebaseConfig'
 
 import { createActionSetInfo } from './state/loaders'
@@ -30,24 +28,10 @@ import { handleAsyncAction } from './handleAsyncAction'
 export const App = () => {
   const dispatch = useDispatch()
 
-  // lessons
-  const [lessons, setLessons] = React.useState(null)
-
   const {
     isUserLoggedIn,
     getUserData
   } = useAuthUser()
-
-  const fetchLessonsByIds = React.useCallback(async (lessonsIds) => {
-    const lessons = await getMultipleLessons(lessonsIds)
-    setLessons(() => lessons)
-  }, [])
-
-  const fetchLessonsByIdsWithLoaders = React.useCallback((lessonsIds) => {
-    handleAsyncAction(async () => {
-      await fetchLessonsByIds(lessonsIds)
-    }, 'Loading lessons...')
-  }, [fetchLessonsByIds])
 
   const onClickLogin = React.useCallback(async (email, password) => {
     handleAsyncAction(async () => {
@@ -97,11 +81,7 @@ export const App = () => {
             <Route
               path={'courses/:courseId'}
               element={
-                <PageCourse
-                  lessons={lessons}
-                  courses={[]}
-                  fetchLessonsByIds={fetchLessonsByIdsWithLoaders}
-                />
+                <PageCourse />
               }
             >
               <Route
@@ -112,7 +92,7 @@ export const App = () => {
                 path={':lessonId'}
                 element={
                   <PageCourseContent
-                    lessons={lessons}
+                    lessons={[]}
                   />
               }
               />
