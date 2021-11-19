@@ -1,10 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import { useNavigate } from 'react-router-dom'
+
 import { useDispatch, useSelector } from 'react-redux'
 
-import { Box, Paper, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, IconButton, Tooltip } from '@mui/material'
-import { Videocam as VideocamIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material'
+import { Box, Button, Paper, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, IconButton, Tooltip } from '@mui/material'
+import { Videocam as VideocamIcon, Edit as EditIcon, Delete as DeleteIcon, Add as AddIcon } from '@mui/icons-material'
 
 import { getAllSelector, actionCreatorGetAll } from '../../state/lessons'
 
@@ -13,6 +15,8 @@ export const PageAdminLessons = (props) => {
     sx,
     ...otherProps
   } = props
+
+  const navigate = useNavigate()
 
   const dispatch = useDispatch()
   const getAllLessonsState = useSelector(getAllSelector)
@@ -32,6 +36,14 @@ export const PageAdminLessons = (props) => {
       }}
       {...otherProps}
     >
+      <Button
+        variant={'contained'}
+        sx={{ width: '100%', marginBottom: 2 }}
+        onClick={() => navigate('new')}
+        startIcon={<AddIcon />}
+      >
+        ADD NEW LESSON
+      </Button>
       <TableContainer component={Paper}>
         <Table
           sx={{ width: '100%' }}
@@ -60,7 +72,10 @@ export const PageAdminLessons = (props) => {
                 <TableCell>{lesson.title}</TableCell>
                 <TableCell align={'right'}>
                   <Tooltip title={'Edit'}>
-                    <IconButton color={'primary'}>
+                    <IconButton
+                      color={'primary'}
+                      onClick={() => navigate(lesson.id)}
+                    >
                       <EditIcon />
                     </IconButton>
                   </Tooltip>
