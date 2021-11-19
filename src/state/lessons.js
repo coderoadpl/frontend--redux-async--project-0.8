@@ -2,7 +2,10 @@ import { combineReducers } from 'redux'
 
 import { createAsyncDuck } from './utils/createAsyncDuck'
 
-import { getAll as getAllLessonsAPICall } from '../api/lessons'
+import {
+  getAll as getAllLessonsAPICall,
+  create as createLessonAPICall
+} from '../api/lessons'
 
 import {
   createActionSetLoading,
@@ -24,11 +27,23 @@ export const {
 } = createAsyncDuck({
   duckName: 'lessons/getAll',
   asyncFunction: getAllLessonsAPICall,
-  ...loadersCallbacks('Lading all lessons...')
+  ...loadersCallbacks('Loading all lessons...')
+})
+
+export const {
+  actionTypes: actionTypesCreate,
+  actionCreators: { async: actionCreatorCreate },
+  selector: createSelector,
+  reducer: createReducer
+} = createAsyncDuck({
+  duckName: 'lessons/create',
+  asyncFunction: createLessonAPICall,
+  ...loadersCallbacks('Creating lesson...')
 })
 
 export const lessonsReducer = combineReducers({
-  getAll: getAllReducer
+  getAll: getAllReducer,
+  create: createReducer
 })
 
 export default lessonsReducer
