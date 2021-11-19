@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { Autocomplete, TextField, List, ListItem, ListItemText, IconButton } from '@mui/material'
+import { Autocomplete, MenuItem, TextField, List, ListItem, ListItemText, IconButton } from '@mui/material'
 import {
   Delete as DeleteIcon,
   KeyboardArrowUp as KeyboardArrowUpIcon,
@@ -25,6 +25,7 @@ export const LessonsSelect = (props) => {
   } = props
 
   const selectedLessons = value.map((lessonId) => options.find((lesson) => lesson.id === lessonId))
+  const filteredOptions = options.filter((option) => !value.includes(option.id))
 
   const add = React.useCallback((lessonId) => onChange(value.concat(lessonId)), [onChange, value])
   const remove = React.useCallback((lessonId) => onChange(value.filter((id) => id !== lessonId)), [onChange, value])
@@ -46,9 +47,17 @@ export const LessonsSelect = (props) => {
           if (!option) return
           add(option.id)
         }}
-        options={options}
+        options={filteredOptions}
         getOptionLabel={(option) => option.title}
         sx={{ width: '100%' }}
+        renderOption={(props, option) => (
+          <MenuItem
+            key={option.id}
+            {...props}
+          >
+            {option.title}
+          </MenuItem>
+        )}
         renderInput={(params) => (
           <TextField
             {...params}

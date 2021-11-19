@@ -60,7 +60,7 @@ export const PageAdminCoursesNew = (props) => {
         {...methods}
       >
         <FormCourse
-          lessons={getAllLessonsState.value}
+          lessons={getAllLessonsState.value || []}
           onSubmit={handleSubmit(async (data) => {
             await dispatch(actionCreatorCreateCourse(data))
             navigate(-1)

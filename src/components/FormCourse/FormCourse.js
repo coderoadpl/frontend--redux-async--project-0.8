@@ -91,7 +91,7 @@ export const FormCourse = (props) => {
           field: { onChange, value }
         }) => (
           <LessonsSelect
-            options={lessons || []}
+            options={lessons}
             value={value}
             onChange={onChange}
           />
