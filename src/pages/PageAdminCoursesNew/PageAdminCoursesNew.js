@@ -33,12 +33,7 @@ export const PageAdminCoursesNew = (props) => {
       lessons: []
     }
   })
-  const { reset, handleSubmit } = methods
-
-  React.useEffect(() => {
-    if (!getAllLessonsState.value) return
-    reset({ lessons: getAllLessonsState.value })
-  }, [getAllLessonsState.value, reset])
+  const { handleSubmit } = methods
 
   React.useEffect(() => {
     dispatch(actionCreatorGetAllLessons())
@@ -65,6 +60,7 @@ export const PageAdminCoursesNew = (props) => {
         {...methods}
       >
         <FormCourse
+          lessons={getAllLessonsState.value}
           onSubmit={handleSubmit(async (data) => {
             await dispatch(actionCreatorCreateCourse(data))
             navigate(-1)

@@ -4,11 +4,13 @@ import PropTypes from 'prop-types'
 import { useFormContext, Controller } from 'react-hook-form'
 
 import { Box, Button, TextField } from '@mui/material'
-import LessonsSelect from '../LessonsSelect/LessonsSelect'
+
+import LessonsSelect, { LessonOptionsPropType } from '../LessonsSelect'
 
 export const FormCourse = (props) => {
   const {
     sx,
+    lessons,
     ...otherProps
   } = props
 
@@ -89,6 +91,7 @@ export const FormCourse = (props) => {
           field: { onChange, value }
         }) => (
           <LessonsSelect
+            options={lessons || []}
             value={value}
             onChange={onChange}
           />
@@ -106,7 +109,8 @@ export const FormCourse = (props) => {
 }
 
 FormCourse.propTypes = {
-  sx: PropTypes.object
+  sx: PropTypes.object,
+  lessons: LessonOptionsPropType
 }
 
 export default FormCourse
