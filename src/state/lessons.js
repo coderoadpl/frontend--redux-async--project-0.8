@@ -3,8 +3,10 @@ import { combineReducers } from 'redux'
 import { createAsyncDuck } from './utils/createAsyncDuck'
 
 import {
+  get as getLessonsAPICall,
   getAll as getAllLessonsAPICall,
-  create as createLessonAPICall
+  create as createLessonAPICall,
+  update as updateLessonAPICall
 } from '../api/lessons'
 
 import {
@@ -17,6 +19,17 @@ const loadersCallbacks = (message) => ({
   callbackStart: ({ dispatch }) => dispatch(createActionSetLoading(message)),
   callbackRejected: ({ error, dispatch }) => dispatch(createActionSetError(error.message || error.data.error.message)),
   callbackFinally: ({ dispatch }) => dispatch(createActionRemoveLoading())
+})
+
+export const {
+  actionTypes: actionTypesGet,
+  actionCreators: { async: actionCreatorGet },
+  selector: getSelector,
+  reducer: getReducer
+} = createAsyncDuck({
+  duckName: 'lessons/get',
+  asyncFunction: getLessonsAPICall,
+  ...loadersCallbacks('Loading lesson...')
 })
 
 export const {
@@ -41,9 +54,22 @@ export const {
   ...loadersCallbacks('Creating lesson...')
 })
 
+export const {
+  actionTypes: actionTypesUpdate,
+  actionCreators: { async: actionCreatorUpdate },
+  selector: updateSelector,
+  reducer: updateReducer
+} = createAsyncDuck({
+  duckName: 'lessons/update',
+  asyncFunction: updateLessonAPICall,
+  ...loadersCallbacks('Updating lesson...')
+})
+
 export const lessonsReducer = combineReducers({
+  get: getReducer,
   getAll: getAllReducer,
-  create: createReducer
+  create: createReducer,
+  update: updateReducer
 })
 
 export default lessonsReducer
