@@ -48,12 +48,12 @@ export const UserContextProvider = (props) => {
   }, [])
 
   const setUser = React.useCallback((user) => {
-    setIsUserLoggedIn(() => true)
     if (user.displayName !== undefined) setUserDisplayName(() => user.displayName)
     if (user.email !== undefined) setUserEmail(() => user.email)
     if (user.avatar !== undefined) setUserAvatar(() => user.avatar)
     if (user.id !== undefined) setUserId(() => user.id)
     if (user.isAdmin !== undefined) setIsAdmin(() => user.isAdmin)
+    setIsUserLoggedIn(() => true)
   }, [])
 
   const getUserData = React.useCallback(async () => {

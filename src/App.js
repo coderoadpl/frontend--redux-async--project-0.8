@@ -33,8 +33,6 @@ export const App = () => {
     getUserData
   } = useAuthUser()
 
-  console.log('isAdmin', isAdmin)
-
   React.useEffect(() => {
     handleAsyncAction(async () => {
       const userIsLoggedIn = await checkIfUserIsLoggedIn()
