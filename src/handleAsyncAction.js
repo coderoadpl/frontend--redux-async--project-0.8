@@ -13,6 +13,6 @@ export const handleAsyncAction = async (asyncAction, message) => {
   } catch (error) {
     store.dispatch(createActionSetError(error.message || error.data.error.message))
   } finally {
-    store.dispatch(createActionRemoveLoading())
+    store.dispatch(createActionRemoveLoading(message))
   }
 }

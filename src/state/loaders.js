@@ -17,8 +17,9 @@ export const createActionSetInfo = (message) => ({
   type: SET_INFO,
   payload: { message }
 })
-export const createActionRemoveLoading = () => ({
-  type: REMOVE_LOADING
+export const createActionRemoveLoading = (message) => ({
+  type: REMOVE_LOADING,
+  payload: { message }
 })
 export const createActionRemoveError = () => ({
   type: REMOVE_ERROR
@@ -30,6 +31,7 @@ export const createActionRemoveInfo = () => ({
 const initialState = {
   isLoading: true,
   loadingMessage: '',
+  loadingMessages: [],
   hasError: false,
   errorMessage: '',
   isInfoDisplayed: false,
@@ -42,6 +44,7 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: true,
+        loadingMessages: state.loadingMessages.concat(action.payload.message),
         loadingMessage: action.payload.message
       }
     case SET_ERROR:
@@ -57,11 +60,17 @@ export const reducer = (state = initialState, action) => {
         infoMessage: action.payload.message
       }
     case REMOVE_LOADING:
+    {
+      const newLoadingMessages = state.loadingMessages.filter((loadingMessage, i, arr) => {
+        return arr.indexOf(loadingMessage) !== i || loadingMessage !== action.payload.message
+      })
       return {
         ...state,
-        isLoading: false,
-        loadingMessage: initialState.loadingMessage
+        isLoading: newLoadingMessages.length !== 0,
+        loadingMessages: newLoadingMessages,
+        loadingMessage: newLoadingMessages.length === 0 ? initialState.loadingMessage : newLoadingMessages[newLoadingMessages.length - 1]
       }
+    }
     case REMOVE_ERROR:
       return {
         ...state,

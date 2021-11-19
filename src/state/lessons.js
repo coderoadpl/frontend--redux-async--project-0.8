@@ -19,7 +19,7 @@ import {
 const loadersCallbacks = (message) => ({
   callbackStart: ({ dispatch }) => dispatch(createActionSetLoading(message)),
   callbackRejected: ({ error, dispatch }) => dispatch(createActionSetError(error.message || error.data.error.message)),
-  callbackFinally: ({ dispatch }) => dispatch(createActionRemoveLoading())
+  callbackFinally: ({ dispatch }) => dispatch(createActionRemoveLoading(message))
 })
 
 export const {
