@@ -8,6 +8,13 @@ import {
   KeyboardArrowDown as KeyboardArrowDownIcon
 } from '@mui/icons-material'
 
+const move = (array, fromIndex, toIndex) => {
+  const target = array[fromIndex]
+  const arrayWithoutTarget = array.slice(0, fromIndex).concat(array.slice(fromIndex + 1))
+  const result = arrayWithoutTarget.slice(0, toIndex).concat(target).concat(arrayWithoutTarget.slice(toIndex))
+  return result
+}
+
 export const LessonsSelect = (props) => {
   const {
     sx,
@@ -17,14 +24,27 @@ export const LessonsSelect = (props) => {
     ...otherProps
   } = props
 
-  const selectedLessons = options.filter((lesson) => value.includes(lesson.id))
+  const selectedLessons = value.map((lessonId) => options.find((lesson) => lesson.id === lessonId))
+
+  const add = React.useCallback((lessonId) => onChange(value.concat(lessonId)), [onChange, value])
+  const remove = React.useCallback((lessonId) => onChange(value.filter((id) => id !== lessonId)), [onChange, value])
+  const moveUp = React.useCallback((lessonId) => {
+    const currentIndex = value.indexOf(lessonId)
+    const newValue = move(value, currentIndex, currentIndex - 1)
+    onChange(newValue)
+  }, [onChange, value])
+  const moveDown = React.useCallback((lessonId) => {
+    const currentIndex = value.indexOf(lessonId)
+    const newValue = move(value, currentIndex, currentIndex + 1)
+    onChange(newValue)
+  }, [onChange, value])
 
   return (
     <>
       <Autocomplete
         onChange={(e, option) => {
           if (!option) return
-          onChange(value.concat(option.id))
+          add(option.id)
         }}
         options={options}
         getOptionLabel={(option) => option.title}
@@ -50,16 +70,18 @@ export const LessonsSelect = (props) => {
                   <>
                     <IconButton
                       disabled={i === 0}
+                      onClick={() => moveUp(lesson.id)}
                     >
                       <KeyboardArrowUpIcon />
                     </IconButton>
                     <IconButton
                       disabled={i === arr.length - 1}
+                      onClick={() => moveDown(lesson.id)}
                     >
                       <KeyboardArrowDownIcon />
                     </IconButton>
                     <IconButton
-                      onClick={() => onChange(value.filter((lessonId) => lesson.id !== lessonId))}
+                      onClick={() => remove(lesson.id)}
                     >
                       <DeleteIcon />
                     </IconButton>
