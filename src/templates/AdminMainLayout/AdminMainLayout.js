@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { Box, Container, Drawer, AppBar, Toolbar, IconButton, Typography, Button } from '@mui/material'
+import { Box, Container, Drawer, AppBar, Toolbar, IconButton, Typography } from '@mui/material'
 import { Menu as MenuIcon } from '@mui/icons-material'
 
 export const AdminMainLayout = (props) => {
@@ -12,6 +12,7 @@ export const AdminMainLayout = (props) => {
     slotMainContent,
     slotAppBarTitle,
     slotDrawerContent,
+    slotAppBarRight,
     ...otherProps
   } = props
 
@@ -43,7 +44,7 @@ export const AdminMainLayout = (props) => {
           >
             {slotAppBarTitle}
           </Typography>
-          <Button>Go back</Button>
+          {slotAppBarRight}
         </Toolbar>
       </AppBar>
       <Drawer
@@ -72,7 +73,8 @@ AdminMainLayout.propTypes = {
   setDrawerOpen: PropTypes.func.isRequired,
   slotMainContent: PropTypes.node,
   slotAppBarTitle: PropTypes.node,
-  slotDrawerContent: PropTypes.node
+  slotDrawerContent: PropTypes.node,
+  slotAppBarRight: PropTypes.node
 }
 
 export default AdminMainLayout

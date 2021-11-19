@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { Outlet } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 
-import { Box } from '@mui/material'
+import { Box, List, ListItem, ListItemButton, ListItemText, Button } from '@mui/material'
 
 import AdminMainLayout from '../../templates/AdminMainLayout/AdminMainLayout'
 
@@ -15,6 +15,8 @@ export const PageAdminMain = (props) => {
 
   const [drawerOpen, setDrawerOpen] = React.useState(false)
 
+  const navigate = useNavigate()
+
   return (
     <Box
       sx={{
@@ -25,9 +27,37 @@ export const PageAdminMain = (props) => {
       <AdminMainLayout
         drawerOpen={drawerOpen}
         setDrawerOpen={setDrawerOpen}
+        slotAppBarRight={<Button onClick={() => navigate('/')}>Go back</Button>}
         slotMainContent={<Outlet />}
         slotAppBarTitle={'Admin panel'}
-        slotDrawerContent={'Drawer'}
+        slotDrawerContent={
+          <List>
+            <ListItem
+              disablePadding={true}
+            >
+              <ListItemButton
+                onClick={() => {
+                  navigate('lessons')
+                  setDrawerOpen(false)
+                }}
+              >
+                <ListItemText primary={'Lessons'} />
+              </ListItemButton>
+            </ListItem>
+            <ListItem
+              disablePadding={true}
+            >
+              <ListItemButton
+                onClick={() => {
+                  navigate('courses')
+                  setDrawerOpen(false)
+                }}
+              >
+                <ListItemText primary={'Courses'} />
+              </ListItemButton>
+            </ListItem>
+          </List>
+        }
       />
     </Box>
   )
