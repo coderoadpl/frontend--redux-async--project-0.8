@@ -5,13 +5,17 @@ import { useForm, FormProvider } from 'react-hook-form'
 
 import { useNavigate } from 'react-router-dom'
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { Box, Typography } from '@mui/material'
 
 import FormCourse from '../../components/FormCourse/FormCourse'
 
-import { actionCreatorCreate } from '../../state/courses'
+import { actionCreatorCreate as actionCreatorCreateCourse } from '../../state/courses'
+import {
+  getAllSelector as getAllSelectorLessons,
+  actionCreatorGetAll as actionCreatorGetAllLessons
+} from '../../state/lessons'
 
 export const PageAdminCoursesNew = (props) => {
   const {
@@ -22,9 +26,25 @@ export const PageAdminCoursesNew = (props) => {
   const navigate = useNavigate()
 
   const dispatch = useDispatch()
+  const getAllLessonsState = useSelector(getAllSelectorLessons)
 
-  const methods = useForm()
-  const { handleSubmit } = methods
+  const methods = useForm({
+    defaultValues: {
+      lessons: []
+    }
+  })
+  const { reset, handleSubmit } = methods
+
+  React.useEffect(() => {
+    if (!getAllLessonsState.value) return
+    reset({ lessons: getAllLessonsState.value })
+  }, [getAllLessonsState.value, reset])
+
+  React.useEffect(() => {
+    dispatch(actionCreatorGetAllLessons())
+  // mount only
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <Box
@@ -46,7 +66,7 @@ export const PageAdminCoursesNew = (props) => {
       >
         <FormCourse
           onSubmit={handleSubmit(async (data) => {
-            await dispatch(actionCreatorCreate(data))
+            await dispatch(actionCreatorCreateCourse(data))
             navigate(-1)
           })}
         />

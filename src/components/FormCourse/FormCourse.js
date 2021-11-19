@@ -1,9 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { useFormContext } from 'react-hook-form'
+import { useFormContext, Controller } from 'react-hook-form'
 
 import { Box, Button, TextField } from '@mui/material'
+import LessonsSelect from '../LessonsSelect/LessonsSelect'
 
 export const FormCourse = (props) => {
   const {
@@ -12,7 +13,7 @@ export const FormCourse = (props) => {
   } = props
 
   const methods = useFormContext()
-  const { register, formState: { errors } } = methods
+  const { register, control, formState: { errors } } = methods
 
   return (
     <Box
@@ -74,6 +75,24 @@ export const FormCourse = (props) => {
         size={'small'}
         error={Boolean(errors.description)}
         helperText={errors.description && errors.description.message}
+      />
+      <Controller
+        control={control}
+        name={'lessons'}
+        rules={{
+          required: {
+            value: true,
+            message: 'Lessons are required'
+          }
+        }}
+        render={({
+          field: { onChange, value }
+        }) => (
+          <LessonsSelect
+            value={value}
+            onChange={onChange}
+          />
+        )}
       />
       <Button
         variant={'contained'}
