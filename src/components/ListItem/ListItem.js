@@ -5,6 +5,7 @@ import Typography from '../Typography'
 
 import LogOutIcon from './LogOutIcon'
 import ProfileIcon from './ProfileIcon'
+import AdminIcon from './AdminIcon'
 
 import classes from './styles.module.css'
 
@@ -32,7 +33,10 @@ export const ListItem = (props) => {
           icon === 'profile' ?
             <ProfileIcon />
             :
-            null
+            icon === 'admin' ?
+              <AdminIcon />
+              :
+              null
       }
       </div>
       <div
@@ -52,7 +56,7 @@ export const ListItem = (props) => {
 ListItem.propTypes = {
   className: PropTypes.string,
   text: PropTypes.string,
-  icon: PropTypes.oneOf(['log-out', 'profile']),
+  icon: PropTypes.oneOf(['log-out', 'profile', 'admin']),
   disabled: PropTypes.bool
 }
 

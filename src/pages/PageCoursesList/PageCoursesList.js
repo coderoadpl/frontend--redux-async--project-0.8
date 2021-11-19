@@ -35,8 +35,10 @@ export const PageCoursesList = (props) => {
   const navigate = useNavigate()
   const onClickProfile = React.useCallback(() => navigate('/profile'), [navigate])
   const onClickCourse = React.useCallback((courseId) => navigate(`/courses/${courseId}`), [navigate])
+  const onClickAdminPanel = React.useCallback((courseId) => navigate('/admin'), [navigate])
 
   const {
+    isAdmin,
     userDisplayName,
     userEmail,
     userAvatar,
@@ -98,6 +100,16 @@ export const PageCoursesList = (props) => {
                   <List
                     className={classes.userDropdownList}
                   >
+                    {
+                      isAdmin ?
+                        <ListItem
+                          icon={'admin'}
+                          text={'Admin panel'}
+                          onClick={onClickAdminPanel}
+                        />
+                        :
+                        null
+                    }
                     <ListItem
                       icon={'profile'}
                       text={'Profile'}
