@@ -6,7 +6,8 @@ import {
   get as getLessonsAPICall,
   getAll as getAllLessonsAPICall,
   create as createLessonAPICall,
-  update as updateLessonAPICall
+  update as updateLessonAPICall,
+  remove as removeLessonAPICall
 } from '../api/lessons'
 
 import {
@@ -65,11 +66,23 @@ export const {
   ...loadersCallbacks('Updating lesson...')
 })
 
+export const {
+  actionTypes: actionTypesRemove,
+  actionCreators: { async: actionCreatorRemove },
+  selector: removeSelector,
+  reducer: removeReducer
+} = createAsyncDuck({
+  duckName: 'lessons/remove',
+  asyncFunction: removeLessonAPICall,
+  ...loadersCallbacks('Removing lesson...')
+})
+
 export const lessonsReducer = combineReducers({
   get: getReducer,
   getAll: getAllReducer,
   create: createReducer,
-  update: updateReducer
+  update: updateReducer,
+  remove: removeReducer
 })
 
 export default lessonsReducer

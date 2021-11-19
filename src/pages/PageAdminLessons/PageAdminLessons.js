@@ -8,13 +8,17 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Box, Button, Paper, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, IconButton, Tooltip } from '@mui/material'
 import { Videocam as VideocamIcon, Edit as EditIcon, Delete as DeleteIcon, Add as AddIcon } from '@mui/icons-material'
 
-import { getAllSelector, actionCreatorGetAll } from '../../state/lessons'
+import YesNoDialog from '../../components/YesNoDialog/YesNoDialog'
+
+import { getAllSelector, actionCreatorGetAll, actionCreatorRemove } from '../../state/lessons'
 
 export const PageAdminLessons = (props) => {
   const {
     sx,
     ...otherProps
   } = props
+
+  const [lessonIdToDelete, setLessonIdToDelete] = React.useState(null)
 
   const navigate = useNavigate()
 
@@ -80,7 +84,10 @@ export const PageAdminLessons = (props) => {
                     </IconButton>
                   </Tooltip>
                   <Tooltip title={'Delete'}>
-                    <IconButton color={'primary'}>
+                    <IconButton
+                      color={'primary'}
+                      onClick={() => setLessonIdToDelete(lesson.id)}
+                    >
                       <DeleteIcon />
                     </IconButton>
                   </Tooltip>
@@ -90,6 +97,19 @@ export const PageAdminLessons = (props) => {
           </TableBody>
         </Table>
       </TableContainer>
+      <YesNoDialog
+        open={lessonIdToDelete !== null}
+        onAccept={async () => {
+          await dispatch(actionCreatorRemove(lessonIdToDelete))
+          setLessonIdToDelete(null)
+          await dispatch(actionCreatorGetAll())
+        }}
+        onClose={() => setLessonIdToDelete(null)}
+        slotTitle={'Confirm deletion'}
+        slotText={'After successful deletion item cant be recovered!'}
+        yesText={'Confirm'}
+        noText={'Cancel'}
+      />
     </Box>
   )
 }
