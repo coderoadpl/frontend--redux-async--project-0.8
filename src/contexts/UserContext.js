@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { getUserData as getUserDataAPICall } from '../auth'
+import { isAdmin as isAdminAPICall } from '../api/admins'
 
 const errorProviderNotFound = () => {
   console.error('UserContext.Provider not found!')
@@ -13,6 +14,7 @@ const initialContextState = {
   userDisplayName: '',
   userEmail: '',
   userAvatar: '',
+  isAdmin: false,
   clearUser: errorProviderNotFound,
   setUser: errorProviderNotFound,
   getUserData: errorProviderNotFound
@@ -34,6 +36,7 @@ export const UserContextProvider = (props) => {
   const [userEmail, setUserEmail] = React.useState(initialContextState.userEmail)
   const [userAvatar, setUserAvatar] = React.useState(initialContextState.userAvatar)
   const [userId, setUserId] = React.useState(initialContextState.userId)
+  const [isAdmin, setIsAdmin] = React.useState(initialContextState.isAdmin)
 
   const clearUser = React.useCallback(() => {
     setIsUserLoggedIn(() => false)
@@ -41,6 +44,7 @@ export const UserContextProvider = (props) => {
     setUserEmail(() => '')
     setUserAvatar(() => '')
     setUserId(() => '')
+    setIsAdmin(() => false)
   }, [])
 
   const setUser = React.useCallback((user) => {
@@ -49,16 +53,19 @@ export const UserContextProvider = (props) => {
     if (user.email !== undefined) setUserEmail(() => user.email)
     if (user.avatar !== undefined) setUserAvatar(() => user.avatar)
     if (user.id !== undefined) setUserId(() => user.id)
+    if (user.isAdmin !== undefined) setIsAdmin(() => user.isAdmin)
   }, [])
 
   const getUserData = React.useCallback(async () => {
     const user = await getUserDataAPICall()
+    const isAdmin = await isAdminAPICall(user.localId)
 
     setUser({
       id: user.localId,
       displayName: user.displayName,
       email: user.email,
-      avatar: user.photoUrl
+      avatar: user.photoUrl,
+      isAdmin
     })
   }, [setUser])
 
@@ -70,6 +77,7 @@ export const UserContextProvider = (props) => {
         userDisplayName,
         userEmail,
         userAvatar,
+        isAdmin,
         clearUser,
         setUser,
         getUserData
