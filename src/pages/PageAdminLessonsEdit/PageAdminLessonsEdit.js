@@ -50,7 +50,7 @@ export const PageAdminLessonsEdit = (props) => {
 
   React.useEffect(() => {
     if (getLessonState.loading) return
-    if (getLessonState.value) return
+    if (getLessonState.value !== null) return
     navigate(lessonsListPath)
   }, [lessonsListPath, getLessonState, navigate])
 

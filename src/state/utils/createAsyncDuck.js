@@ -39,8 +39,8 @@ export const createAsyncDuck = ({ duckName, selectorPath, asyncFunction, callbac
   const selector = (state) => get(state, selectorPath || duckName.replace('/', '.'))
 
   const initialState = {
-    value: null,
-    error: null,
+    value: undefined,
+    error: undefined,
     loading: false
   }
 
