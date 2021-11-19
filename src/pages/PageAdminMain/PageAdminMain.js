@@ -5,11 +5,15 @@ import { Outlet } from 'react-router-dom'
 
 import { Box } from '@mui/material'
 
+import AdminMainLayout from '../../templates/AdminMainLayout/AdminMainLayout'
+
 export const PageAdminMain = (props) => {
   const {
     sx,
     ...otherProps
   } = props
+
+  const [drawerOpen, setDrawerOpen] = React.useState(false)
 
   return (
     <Box
@@ -18,8 +22,13 @@ export const PageAdminMain = (props) => {
       }}
       {...otherProps}
     >
-      PageAdminMain
-      <Outlet />
+      <AdminMainLayout
+        drawerOpen={drawerOpen}
+        setDrawerOpen={setDrawerOpen}
+        slotMainContent={<Outlet />}
+        slotAppBarTitle={'Admin panel'}
+        slotDrawerContent={'Drawer'}
+      />
     </Box>
   )
 }
