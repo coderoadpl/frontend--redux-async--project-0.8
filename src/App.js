@@ -12,6 +12,13 @@ import PageProfile from './pages/PageProfile'
 import PageCourse from './pages/PageCourse'
 import PageCourseContentEmpty from './pages/PageCourseContentEmpty'
 import PageCourseContent from './pages/PageCourseContent'
+import PageAdminMain from './pages/PageAdminMain'
+import PageAdminLessons from './pages/PageAdminLessons'
+import PageAdminLessonsNew from './pages/PageAdminLessonsNew'
+import PageAdminLessonsEdit from './pages/PageAdminLessonsEdit'
+import PageAdminCourses from './pages/PageAdminCourses'
+import PageAdminCoursesNew from './pages/PageAdminCoursesNew'
+import PageAdminCoursesEdit from './pages/PageAdminCoursesEdit'
 
 import { useAuthUser } from './contexts/UserContext'
 
@@ -50,9 +57,7 @@ export const App = () => {
             />
             <Route
               path={'courses/:courseId'}
-              element={
-                <PageCourse />
-              }
+              element={<PageCourse />}
             >
               <Route
                 index={true}
@@ -63,6 +68,40 @@ export const App = () => {
                 element={<PageCourseContent />}
               />
             </Route>
+            {
+              isAdmin ?
+                <Route
+                  path={'/admin'}
+                  element={<PageAdminMain />}
+                >
+                  <Route
+                    path={'lessons'}
+                    element={<PageAdminLessons />}
+                  />
+                  <Route
+                    path={'lessons/new'}
+                    element={<PageAdminLessonsNew />}
+                  />
+                  <Route
+                    path={'lessons/:lessonId'}
+                    element={<PageAdminLessonsEdit />}
+                  />
+                  <Route
+                    path={'courses'}
+                    element={<PageAdminCourses />}
+                  />
+                  <Route
+                    path={'courses/new'}
+                    element={<PageAdminCoursesNew />}
+                  />
+                  <Route
+                    path={'courses/:courseId'}
+                    element={<PageAdminCoursesEdit />}
+                  />
+                </Route>
+                :
+                null
+            }
             <Route
               path={'*'}
               element={
