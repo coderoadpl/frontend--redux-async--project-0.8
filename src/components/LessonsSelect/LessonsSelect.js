@@ -24,7 +24,9 @@ export const LessonsSelect = (props) => {
     ...otherProps
   } = props
 
-  const selectedLessons = value.map((lessonId) => options.find((lesson) => lesson.id === lessonId))
+  const selectedLessons = value
+    .map((lessonId) => options.find((lesson) => lesson.id === lessonId))
+    .filter((lesson) => lesson !== undefined)
   const filteredOptions = options.filter((option) => !value.includes(option.id))
 
   const add = React.useCallback((lessonId) => onChange(value.concat(lessonId)), [onChange, value])
